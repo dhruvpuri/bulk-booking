@@ -1,0 +1,294 @@
+.container {
+  padding: 48px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.paymentForm {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.orderSummary {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 32px;
+  height: fit-content;
+  position: sticky;
+  top: 24px;
+}
+
+.summaryTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+}
+
+.packageSummary {
+  margin-bottom: 24px;
+}
+
+.packageName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.packageDescription {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.packageDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.detail span:first-child {
+  color: #64748b;
+}
+
+.detail span:last-child {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.separator {
+  margin: 16px 0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.priceRow span:first-child {
+  color: #64748b;
+}
+
+.priceRow span:last-child {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 8px;
+}
+
+.savings {
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  margin: 24px 0;
+}
+
+.savingsAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 4px;
+}
+
+.savingsText {
+  font-size: 12px;
+  color: #166534;
+}
+
+.security {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.securityIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.securityText strong {
+  font-size: 14px;
+  color: #0c4a6e;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.securityText p {
+  font-size: 12px;
+  color: #0c4a6e;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 32px 24px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .orderSummary {
+    order: -1;
+    position: static;
+  }
+  
+  .paymentForm {
+    padding: 24px;
+  }
+  
+  .row {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 24px 16px;
+  }
+  
+  .title {
+    font-size: 22px;
+  }
+  
+  .paymentForm {
+    padding: 20px;
+  }
+  
+  .orderSummary {
+    padding: 24px;
+  }
+}

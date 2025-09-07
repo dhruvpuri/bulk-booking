@@ -1,0 +1,191 @@
+.calendar {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.monthYear {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.navButton {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.navButton:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.dayNames {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.dayName {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  padding: 8px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.emptyDay {
+  height: 40px;
+}
+
+.day {
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.day:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.day:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.day.selected {
+  background: #3b82f6;
+  color: white;
+}
+
+.day.selected:hover {
+  background: #2563eb;
+}
+
+.day.booked {
+  background: #fef3c7;
+  color: #d97706;
+  cursor: not-allowed;
+}
+
+.day.booked::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #d97706;
+  border-radius: 50%;
+}
+
+.day.disabled {
+  background: #f9fafb;
+  color: #d1d5db;
+}
+
+.day.today {
+  border: 2px solid #3b82f6;
+  font-weight: 600;
+}
+
+.day.today.selected {
+  border-color: white;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.selectedColor {
+  background: #3b82f6;
+}
+
+.bookedColor {
+  background: #fef3c7;
+  border: 1px solid #d97706;
+}
+
+.todayColor {
+  background: white;
+  border: 2px solid #3b82f6;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .calendar {
+    padding: 16px;
+    max-width: 100%;
+  }
+  
+  .day {
+    height: 36px;
+    font-size: 13px;
+  }
+  
+  .monthYear {
+    font-size: 16px;
+  }
+  
+  .legend {
+    gap: 12px;
+  }
+  
+  .legendItem {
+    font-size: 11px;
+  }
+}

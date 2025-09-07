@@ -1,103 +1,252 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState } from 'react';
+import { User } from '@/types';
+import Hero from '@/components/guest/Hero';
+import PackageExplorer from '@/components/guest/PackageExplorer';
+import LoginSignup from '@/components/auth/LoginSignup';
+import HostDashboard from '@/components/host/HostDashboard';
+import BookingFlow from '@/components/booking/BookingFlow';
+
+type AppView = 'home' | 'login' | 'host-dashboard' | 'booking';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentView, setCurrentView] = useState<AppView>('home');
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [selectedPackageId, setSelectedPackageId] = useState<number | undefined>();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleLogin = (user: User) => {
+    setCurrentUser(user);
+    if (user.role === 'host') {
+      setCurrentView('host-dashboard');
+    } else {
+      setCurrentView('home');
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setCurrentView('home');
+  };
+
+  const handlePackageReserve = (packageId: number) => {
+    setSelectedPackageId(packageId);
+    if (currentUser) {
+      setCurrentView('booking');
+    } else {
+      setCurrentView('login');
+    }
+  };
+
+  const handleBookingComplete = () => {
+    setCurrentView('home');
+    setSelectedPackageId(undefined);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView('home');
+    setSelectedPackageId(undefined);
+  };
+
+  // Render based on current view
+  switch (currentView) {
+    case 'login':
+      return <LoginSignup onLogin={handleLogin} />;
+    
+    case 'host-dashboard':
+      if (!currentUser || currentUser.role !== 'host') {
+        setCurrentView('home');
+        return null;
+      }
+      return (
+        <HostDashboard 
+          user={currentUser} 
+          onLogout={handleLogout} 
+        />
+      );
+    
+    case 'booking':
+      if (!currentUser || currentUser.role !== 'guest') {
+        setCurrentView('login');
+        return null;
+      }
+      return (
+        <BookingFlow
+          selectedPackageId={selectedPackageId}
+          onComplete={handleBookingComplete}
+          onBack={handleBackToHome}
+        />
+      );
+    
+    case 'home':
+    default:
+      return (
+        <div>
+          {/* Navigation Bar */}
+          <nav style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            background: 'white',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+            padding: '16px 24px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            zIndex: 1000,
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+          }}>
+            <div style={{
+              fontSize: '24px',
+              fontWeight: '700',
+              color: '#1e293b',
+              letterSpacing: '-0.5px'
+            }}>
+              BulkStay
+            </div>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              {currentUser ? (
+                <>
+                  <span style={{ fontSize: '14px', color: '#64748b' }}>
+                    Welcome, {currentUser.email}
+                  </span>
+                  {currentUser.role === 'host' && (
+                    <button
+                      onClick={() => setCurrentView('host-dashboard')}
+                      style={{
+                        background: 'none',
+                        border: '1px solid #3b82f6',
+                        color: '#3b82f6',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: '500'
+                      }}
+                    >
+                      Dashboard
+                    </button>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      background: 'none',
+                      border: '1px solid #64748b',
+                      color: '#64748b',
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '14px'
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setCurrentView('login')}
+                  style={{
+                    background: '#3b82f6',
+                    color: 'white',
+                    border: 'none',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
+          </nav>
+
+          {/* Main Content */}
+          <div style={{ paddingTop: '80px' }}>
+            <Hero />
+            <PackageExplorer onPackageReserve={handlePackageReserve} />
+          </div>
+
+          {/* Footer */}
+          <footer style={{
+            background: '#1e293b',
+            color: 'white',
+            padding: '48px 24px',
+            textAlign: 'center'
+          }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '32px',
+                marginBottom: '32px'
+              }}>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px' }}>
+                    BulkStay
+                  </h3>
+                  <p style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.5' }}>
+                    The smart way to book your travels. Save big with bulk booking packages.
+                  </p>
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>
+                    For Guests
+                  </h4>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        Browse Packages
+                      </a>
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        How It Works
+                      </a>
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        Support
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>
+                    For Hosts
+                  </h4>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        List Your Property
+                      </a>
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        Host Resources
+                      </a>
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <a href="#" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
+                        Partner Program
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div style={{
+                borderTop: '1px solid #334155',
+                paddingTop: '24px',
+                fontSize: '14px',
+                color: '#94a3b8'
+              }}>
+                © 2024 BulkStay. All rights reserved. | Privacy Policy | Terms of Service
+              </div>
+            </div>
+          </footer>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      );
+  }
 }

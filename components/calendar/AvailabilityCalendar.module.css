@@ -1,0 +1,238 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modeSelector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.modeButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.modeButton {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modeButton:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.modeButton.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.nightsCounter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.selected {
+  color: #3b82f6;
+  font-size: 18px;
+}
+
+.separator {
+  color: #d1d5db;
+  font-size: 16px;
+}
+
+.total {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.label {
+  color: #6b7280;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.calendarContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.calendar {
+  width: 100%;
+  max-width: 400px;
+}
+
+.selectedDatesInfo {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.selectedTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e40af;
+  margin: 0 0 12px 0;
+}
+
+.selectedDatesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.selectedDate {
+  background: #3b82f6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.remainingText {
+  color: #1e40af;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.actions button {
+  min-width: 120px;
+}
+
+.tips {
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.tipsTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #d97706;
+  margin: 0 0 12px 0;
+}
+
+.tipsList {
+  margin: 0;
+  padding-left: 20px;
+  color: #92400e;
+}
+
+.tipsList li {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.tipsList li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 16px;
+  }
+  
+  .modeSelector {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .nightsCounter {
+    justify-content: center;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+    margin: 8px;
+  }
+  
+  .title {
+    font-size: 20px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+  }
+  
+  .modeButtons {
+    width: 100%;
+  }
+  
+  .modeButton {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .selectedDatesList {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,335 @@
+.container {
+  padding: 48px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0 auto 24px auto;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bookingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 16px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.separator {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.packageCard {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.packageName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.packageDescription {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+.packageStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.nextSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.stepContent h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.stepContent p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.quickActions,
+.support,
+.savings {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 16px 0;
+}
+
+.actionButton {
+  width: 100%;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.actionButton:last-child {
+  margin-bottom: 0;
+}
+
+.supportContent p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.contactIcon {
+  font-size: 16px;
+}
+
+.savings {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  text-align: center;
+}
+
+.savingsAmount {
+  font-size: 32px;
+  font-weight: 700;
+  color: #166534;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.savingsText {
+  font-size: 14px;
+  color: #166534;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 32px 24px;
+  }
+  
+  .title {
+    font-size: 28px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+  }
+  
+  .content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .sidebar {
+    order: -1;
+  }
+  
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .packageStats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .stat {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+  
+  .section {
+    padding: 24px;
+  }
+  
+  .quickActions,
+  .support,
+  .savings {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 24px 16px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .successIcon {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+  
+  .section {
+    padding: 20px;
+  }
+  
+  .packageCard {
+    padding: 20px;
+  }
+  
+  .savingsAmount {
+    font-size: 28px;
+  }
+}

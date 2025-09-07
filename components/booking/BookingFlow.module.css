@@ -1,0 +1,171 @@
+.container {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 24px;
+}
+
+.header {
+  max-width: 800px;
+  margin: 0 auto 32px auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.backButton:hover {
+  color: #1e293b;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.progressSection {
+  max-width: 800px;
+  margin: 0 auto 48px auto;
+}
+
+.progressBar {
+  margin-bottom: 24px;
+}
+
+.progress {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.step.upcoming .stepNumber {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.step.active .stepNumber {
+  background: #3b82f6;
+  color: white;
+}
+
+.step.completed .stepNumber {
+  background: #10b981;
+  color: white;
+}
+
+.stepTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.step.active .stepTitle {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.step.completed .stepTitle {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .stepNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .stepTitle {
+    font-size: 11px;
+  }
+  
+  .progressSection {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .step {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  .stepNumber {
+    flex-shrink: 0;
+  }
+}
