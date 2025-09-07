@@ -1,28 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { authenticateUser, registerUser } from '@/services/api';
+import { User, Package } from '@/types';
 import styles from './LoginSignup.module.css';
 
 interface LoginSignupProps {
   onLogin: (user: User) => void;
+  selectedPackage?: Package | null;
 }
 
-const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin }) => {
-  const [isSignup, setIsSignup] = useState(false);
-  const [isHost, setIsHost] = useState(false);
+const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) => {
+  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    travelFrequency: ''
+    confirmPassword: '',
+    role: 'guest' as 'guest' | 'host',
+    travelFrequency: 'monthly'
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -36,70 +36,71 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin }) => {
     setError(null);
 
     try {
-      if (isSignup) {
+      if (isLogin) {
+        // Login flow
+        const user = await authenticateUser(formData.email, formData.password);
+        
+        // If user is trying to book a package but logged in as host, show error
+        if (selectedPackage && user.role === 'host') {
+          setError('Hosts cannot book packages. Please log in as a guest or create a guest account.');
+          setLoading(false);
+          return;
+        }
+        
+        onLogin(user);
+      } else {
+        // Registration flow
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match');
+          setLoading(false);
+          return;
+        }
+
+        if (formData.password.length < 6) {
+          setError('Password must be at least 6 characters long');
+          setLoading(false);
+          return;
+        }
+
         const user = await registerUser(
           formData.email,
           formData.password,
-          isHost ? 'host' : 'guest',
-          !isHost ? formData.travelFrequency : undefined
+          formData.role,
+          formData.role === 'guest' ? formData.travelFrequency : undefined
         );
-        onLogin(user);
-      } else {
-        const user = await authenticateUser(formData.email, formData.password);
+        
         onLogin(user);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Authentication failed');
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleMode = () => {
-    setIsSignup(!isSignup);
-    setError(null);
-    setFormData({ email: '', password: '', travelFrequency: '' });
-  };
-
-  const toggleRole = () => {
-    setIsHost(!isHost);
-    setFormData(prev => ({ ...prev, travelFrequency: '' }));
-  };
-
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={styles.formContainer}>
         <div className={styles.header}>
           <h2 className={styles.title}>
-            {isSignup ? 'Create Account' : 'Welcome Back'}
+            {isLogin ? 'Welcome Back' : 'Create Your Account'}
           </h2>
           <p className={styles.subtitle}>
-            {isSignup 
-              ? 'Join BulkStay to start saving on your travels'
-              : 'Sign in to your BulkStay account'
+            {selectedPackage 
+              ? `Sign in to book the ${selectedPackage.name} package`
+              : isLogin 
+                ? 'Sign in to your BulkStay account' 
+                : 'Join BulkStay and start saving on your travels'
             }
           </p>
         </div>
 
-        {isSignup && (
-          <div className={styles.roleToggle}>
-            <div className={styles.roleOptions}>
-              <button
-                type="button"
-                className={`${styles.roleOption} ${!isHost ? styles.active : ''}`}
-                onClick={() => setIsHost(false)}
-              >
-                <span className={styles.roleIcon}>🧳</span>
-                <span>II'm a Guestapos;m a Guest</span>
-              </button>
-              <button
-                type="button"
-                className={`${styles.roleOption} ${isHost ? styles.active : ''}`}
-                onClick={toggleRole}
-              >
-                <span className={styles.roleIcon}>🏠</span>
-                <span>II'm a Hostapos;m a Host</span>
-              </button>
+        {selectedPackage && (
+          <div className={styles.packageReminder}>
+            <div className={styles.packageIcon}>📦</div>
+            <div className={styles.packageInfo}>
+              <h4 className={styles.packageName}>{selectedPackage.name}</h4>
+              <p className={styles.packagePrice}>₹{selectedPackage.price.toLocaleString('en-IN')}</p>
             </div>
           </div>
         )}
@@ -129,21 +130,50 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin }) => {
             />
           </div>
 
-          {isSignup && !isHost && (
-            <div className={styles.field}>
-              <Label htmlFor="travelFrequency">How often do you travel?</Label>
-              <Select onValueChange={(value) => handleInputChange('travelFrequency', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select travel frequency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="weekly">Weekly</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                  <SelectItem value="quarterly">Quarterly</SelectItem>
-                  <SelectItem value="annually">Annually</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          {!isLogin && (
+            <>
+              <div className={styles.field}>
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+
+              <div className={styles.field}>
+                <Label htmlFor="role">Account Type</Label>
+                <select
+                  id="role"
+                  value={formData.role}
+                  onChange={(e) => handleInputChange('role', e.target.value)}
+                  className={styles.select}
+                >
+                  <option value="guest">Guest - Book accommodations</option>
+                  <option value="host">Host - List properties</option>
+                </select>
+              </div>
+
+              {formData.role === 'guest' && (
+                <div className={styles.field}>
+                  <Label htmlFor="travelFrequency">How often do you travel?</Label>
+                  <select
+                    id="travelFrequency"
+                    value={formData.travelFrequency}
+                    onChange={(e) => handleInputChange('travelFrequency', e.target.value)}
+                    className={styles.select}
+                  >
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="annually">Annually</option>
+                  </select>
+                </div>
+              )}
+            </>
           )}
 
           {error && (
@@ -152,33 +182,69 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin }) => {
             </div>
           )}
 
-          <Button 
-            type="submit" 
-            className={styles.submitButton}
-            disabled={loading}
-          >
-            {loading ? 'Please wait...' : (isSignup ? 'Create Account' : 'Sign In')}
+          <Button type="submit" disabled={loading} className={styles.submitButton}>
+            {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
           </Button>
         </form>
 
-        <div className={styles.footer}>
+        <div className={styles.switchMode}>
           <p>
-            {isSignup ? 'Already have an account?' : "Don't have an account?"}
-            <button 
-              type="button" 
-              onClick={toggleMode}
-              className={styles.toggleButton}
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
+            <button
+              type="button"
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError(null);
+                setFormData(prev => ({
+                  ...prev,
+                  password: '',
+                  confirmPassword: ''
+                }));
+              }}
+              className={styles.switchButton}
             >
-              {isSignup ? 'Sign In' : 'Sign Up'}
+              {isLogin ? 'Sign up' : 'Sign in'}
             </button>
           </p>
         </div>
 
-        <div className={styles.demoCredentials}>
-          <h4>Demo Credentials:</h4>
-          <p><strong>Guest:</strong> guest@example.com / password</p>
-          <p><strong>Host:</strong> host@example.com / password</p>
-        </div>
+        {isLogin && (
+          <div className={styles.demoCredentials}>
+            <h4 className={styles.demoTitle}>Demo Credentials:</h4>
+            <div className={styles.demoOptions}>
+              <div className={styles.demoOption}>
+                <strong>Guest:</strong> guest@example.com / password
+              </div>
+              <div className={styles.demoOption}>
+                <strong>Host:</strong> host@example.com / password
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!isLogin && formData.role === 'guest' && (
+          <div className={styles.benefits}>
+            <h4 className={styles.benefitsTitle}>Guest Benefits:</h4>
+            <ul className={styles.benefitsList}>
+              <li>Save up to 30% on premium accommodations</li>
+              <li>Flexible booking with no blackout dates</li>
+              <li>Access to exclusive properties</li>
+              <li>24/7 customer support</li>
+            </ul>
+          </div>
+        )}
+
+        {!isLogin && formData.role === 'host' && (
+          <div className={styles.benefits}>
+            <h4 className={styles.benefitsTitle}>Host Benefits:</h4>
+            <ul className={styles.benefitsList}>
+              <li>Increase booking volume by 40%</li>
+              <li>Attract longer-stay guests</li>
+              <li>Reduce vacancy periods</li>
+              <li>Higher revenue per booking</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
