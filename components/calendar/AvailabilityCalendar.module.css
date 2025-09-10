@@ -1,11 +1,16 @@
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px;
   background: white;
-  border-radius: 16px;
+  border-radius: 24px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   font-family: 'Inter', sans-serif;
+}
+
+:global(.dark) .container {
+  background: #1e293b;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .header {
@@ -14,27 +19,43 @@
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: #1f2937;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+}
+
+:global(.dark) .title {
+  color: #f1f5f9;
 }
 
 .subtitle {
-  font-size: 16px;
+  font-size: 1.125rem;
   color: #6b7280;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+:global(.dark) .subtitle {
+  color: #94a3b8;
 }
 
 .modeSelector {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding: 16px;
-  background: #f9fafb;
-  border-radius: 12px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+:global(.dark) .modeSelector {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modeButtons {
@@ -43,54 +64,104 @@
 }
 
 .modeButton {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: 1px solid #e5e7eb;
   background: white;
   color: #6b7280;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:global(.dark) .modeButton {
+  background: #334155;
+  border-color: #475569;
+  color: #94a3b8;
 }
 
 .modeButton:hover {
   border-color: #3b82f6;
   color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+:global(.dark) .modeButton:hover {
+  border-color: #6366f1;
+  color: #a5b4fc;
 }
 
 .modeButton.active {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: white;
   border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+:global(.dark) .modeButton.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: #6366f1;
 }
 
 .nightsCounter {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-weight: 600;
+  background: rgba(99, 102, 241, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+:global(.dark) .nightsCounter {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 .selected {
   color: #3b82f6;
-  font-size: 18px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark) .selected {
+  color: #a5b4fc;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .separator {
-  color: #d1d5db;
-  font-size: 16px;
+  color: #64748b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 2px;
+}
+
+:global(.dark) .separator {
+  color: #94a3b8;
 }
 
 .total {
-  color: #6b7280;
-  font-size: 16px;
+  color: #475569;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+:global(.dark) .total {
+  color: #cbd5e1;
 }
 
 .label {
-  color: #6b7280;
-  font-size: 14px;
-  margin-left: 4px;
+  color: #475569;
+  font-size: 0.95rem;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+:global(.dark) .label {
+  color: #cbd5e1;
 }
 
 .calendarContainer {
@@ -105,18 +176,28 @@
 }
 
 .selectedDatesInfo {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+:global(.dark) .selectedDatesInfo {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 .selectedTitle {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: #1e40af;
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+:global(.dark) .selectedTitle {
+  color: #a5b4fc;
 }
 
 .selectedDatesList {
@@ -127,19 +208,35 @@
 }
 
 .selectedDate {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: white;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+:global(.dark) .selectedDate {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
 }
 
 .remainingText {
   color: #1e40af;
-  font-size: 14px;
+  font-size: 1.1rem;
   margin: 0;
-  font-weight: 500;
+  font-weight: 700;
+  text-align: center;
+  background: rgba(30, 64, 175, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 64, 175, 0.2);
+}
+
+:global(.dark) .remainingText {
+  color: #a5b4fc;
+  background: rgba(165, 180, 252, 0.15);
+  border: 1px solid rgba(165, 180, 252, 0.3);
 }
 
 .actions {
@@ -154,29 +251,44 @@
 }
 
 .tips {
-  background: #fffbeb;
-  border: 1px solid #fed7aa;
-  border-radius: 12px;
-  padding: 20px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+:global(.dark) .tips {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .tipsTitle {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: #d97706;
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+:global(.dark) .tipsTitle {
+  color: #fbbf24;
 }
 
 .tipsList {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 24px;
   color: #92400e;
 }
 
+:global(.dark) .tipsList {
+  color: #fcd34d;
+}
+
 .tipsList li {
-  font-size: 14px;
-  line-height: 1.5;
-  margin-bottom: 6px;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .tipsList li:last-child {

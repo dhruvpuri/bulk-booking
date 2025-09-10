@@ -19,12 +19,16 @@ const PackageExplorer: React.FC<PackageExplorerProps> = ({ packages, onReserve }
   };
 
   return (
-    <section className={styles.section}>
+    <section id="packages" className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Choose Your Perfect Package</h2>
+          <h2 className={styles.title}>
+            Choose Your Perfect{' '}
+            <span className={styles.titleGradient}>Package</span>
+          </h2>
           <p className={styles.subtitle}>
-            Select the package that matches your travel style and save big on premium accommodations.
+            Select the package that matches your travel style and save big on premium accommodations. 
+            Each package is designed to give you maximum flexibility and incredible value.
           </p>
         </div>
 

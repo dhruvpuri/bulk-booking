@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { formatINR } from '@/services/api';
 import { BookingData } from './BookingFlow';
+import AvailabilityCalendar from '@/components/calendar/AvailabilityCalendar';
 import styles from './ConfirmationPage.module.css';
 
 interface ConfirmationPageProps {
@@ -13,16 +14,71 @@ interface ConfirmationPageProps {
 }
 
 const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, bookingData }) => {
-  const { selectedPackage, bookingId, totalAmount, user } = bookingData;
+  const { selectedPackage, bookingId, totalAmount, user, tentativeDates = [] } = bookingData;
+  const [showDateModifier, setShowDateModifier] = useState(false);
+  const [modifiedDates, setModifiedDates] = useState<string[]>(tentativeDates);
+  const [currentTentativeDates, setCurrentTentativeDates] = useState<string[]>(tentativeDates);
 
   if (!selectedPackage || !bookingId) {
     return <div>Error: Missing booking information</div>;
   }
 
   const handleModifyDates = () => {
-    // In a real app, this would navigate to a date modification flow
-    alert('Date modification feature would be implemented here');
+    setShowDateModifier(true);
   };
+
+  const handleDateModificationComplete = () => {
+    setShowDateModifier(false);
+    setCurrentTentativeDates(modifiedDates);
+    // In a real app, you would save the modified dates to the backend
+    console.log('Modified dates:', modifiedDates);
+  };
+
+  const handleDateModificationCancel = () => {
+    setShowDateModifier(false);
+    setModifiedDates(currentTentativeDates); // Reset to current dates
+  };
+
+  const handleDateSelect = (dates: string[]) => {
+    setModifiedDates(dates);
+  };
+
+  const handleRemoveDate = (dateToRemove: string) => {
+    const updatedDates = currentTentativeDates.filter(date => date !== dateToRemove);
+    setCurrentTentativeDates(updatedDates);
+    setModifiedDates(updatedDates);
+    // In a real app, you would save the updated dates to the backend
+    console.log('Removed date:', dateToRemove, 'Updated dates:', updatedDates);
+  };
+
+  const handleClearAllDates = () => {
+    setCurrentTentativeDates([]);
+    setModifiedDates([]);
+    // In a real app, you would save the cleared dates to the backend
+    console.log('Cleared all tentative dates');
+  };
+
+  if (showDateModifier) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Modify Your Tentative Dates</h2>
+          <p className={styles.subtitle}>
+            Update your travel dates for the {selectedPackage.name} package.
+          </p>
+        </div>
+        <div className={styles.dateModifierContainer}>
+          <AvailabilityCalendar
+            selectedDates={modifiedDates}
+            onDateSelect={handleDateSelect}
+            maxNights={selectedPackage.totalNights}
+            onConfirm={handleDateModificationComplete}
+            onCancel={handleDateModificationCancel}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -85,6 +141,52 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
 
           <Separator className={styles.separator} />
 
+          {currentTentativeDates.length > 0 && (
+            <>
+              <div className={styles.section}>
+                <div className={styles.sectionHeader}>
+                  <h3 className={styles.sectionTitle}>Your Tentative Dates</h3>
+                  <Button 
+                    onClick={handleClearAllDates}
+                    variant="ghost"
+                    size="sm"
+                    className={styles.clearAllButton}
+                  >
+                    Clear All
+                  </Button>
+                </div>
+                <div className={styles.tentativeDates}>
+                  <div className={styles.datesGrid}>
+                    {currentTentativeDates.sort().map((date, index) => (
+                      <div key={index} className={styles.dateChipRemovable}>
+                        <span className={styles.dateText}>
+                          {new Date(date).toLocaleDateString('en-IN', {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </span>
+                        <button 
+                          onClick={() => handleRemoveDate(date)}
+                          className={styles.removeButton}
+                          title="Remove this date"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <p className={styles.datesNote}>
+                    {currentTentativeDates.length} of {selectedPackage.totalNights} nights selected. 
+                    Click × to remove individual dates or modify all dates at once.
+                  </p>
+                </div>
+              </div>
+              <Separator className={styles.separator} />
+            </>
+          )}
+
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>Next Steps</h3>
             <div className={styles.nextSteps}>
@@ -121,7 +223,7 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
               variant="outline"
               className={styles.actionButton}
             >
-              Modify Tentative Dates
+              {currentTentativeDates.length > 0 ? 'Modify Tentative Dates' : 'Add Tentative Dates'}
             </Button>
             <Button 
               onClick={() => window.print()}

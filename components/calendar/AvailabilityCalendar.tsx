@@ -21,6 +21,12 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
   onCancel
 }) => {
   const [mode, setMode] = useState<'single' | 'multiple' | 'range'>('multiple');
+  const [localSelectedDates, setLocalSelectedDates] = useState<string[]>(selectedDates);
+
+  // Sync with parent component when selectedDates prop changes
+  React.useEffect(() => {
+    setLocalSelectedDates(selectedDates);
+  }, [selectedDates]);
 
   // Mock booked dates (in a real app, this would come from API)
   const bookedDates = [
@@ -34,11 +40,12 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
 
   const handleDateSelect = (dates: string[]) => {
     if (dates.length <= maxNights) {
+      setLocalSelectedDates(dates);
       onDateSelect(dates);
     }
   };
 
-  const remainingNights = maxNights - selectedDates.length;
+  const remainingNights = maxNights - localSelectedDates.length;
 
   return (
     <div className={styles.container}>
@@ -65,7 +72,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
           </button>
         </div>
         <div className={styles.nightsCounter}>
-          <span className={styles.selected}>{selectedDates.length}</span>
+          <span className={styles.selected}>{localSelectedDates.length}</span>
           <span className={styles.separator}>/</span>
           <span className={styles.total}>{maxNights}</span>
           <span className={styles.label}>nights selected</span>
@@ -74,7 +81,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
 
       <div className={styles.calendarContainer}>
         <Calendar
-          selectedDates={selectedDates}
+          selectedDates={localSelectedDates}
           onDateSelect={handleDateSelect}
           mode={mode}
           bookedDates={bookedDates}
@@ -82,11 +89,11 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
         />
       </div>
 
-      {selectedDates.length > 0 && (
+      {localSelectedDates.length > 0 && (
         <div className={styles.selectedDatesInfo}>
           <h4 className={styles.selectedTitle}>Selected Dates:</h4>
           <div className={styles.selectedDatesList}>
-            {selectedDates.sort().map((date, index) => (
+            {localSelectedDates.sort().map((date, index) => (
               <span key={index} className={styles.selectedDate}>
                 {new Date(date).toLocaleDateString('en-IN', {
                   weekday: 'short',
@@ -110,9 +117,9 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
         </Button>
         <Button 
           onClick={onConfirm}
-          disabled={selectedDates.length === 0}
+          disabled={localSelectedDates.length === 0}
         >
-          Continue with {selectedDates.length} night{selectedDates.length !== 1 ? 's' : ''}
+          Continue with {localSelectedDates.length} night{localSelectedDates.length !== 1 ? 's' : ''}
         </Button>
       </div>
 

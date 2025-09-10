@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Package, User } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -34,8 +34,54 @@ interface StepData {
 }
 
 const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete, onBack }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [bookingData, setBookingData] = useState<BookingData>({});
+  // Check if user is already logged in and skip registration
+  const [currentStep, setCurrentStep] = useState(() => {
+    const savedUser = localStorage.getItem('bulkstay_user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        if (user && user.role === 'guest') {
+          console.log('🎯 User already logged in, skipping registration step');
+          return 2; // Skip to package selection
+        }
+      } catch (e) {
+        console.log('Error parsing user in BookingFlow:', e);
+      }
+    }
+    return 1; // Start with registration if no user
+  });
+  
+  const [bookingData, setBookingData] = useState<BookingData>(() => {
+    // Pre-populate with user data if available
+    const savedUser = localStorage.getItem('bulkstay_user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        if (user && user.role === 'guest') {
+          return { user };
+        }
+      } catch (e) {
+        console.log('Error parsing user for booking data:', e);
+      }
+    }
+    return {};
+  });
+
+  // Load the selected package when component mounts
+  React.useEffect(() => {
+    if (selectedPackageId && !bookingData.selectedPackage) {
+      // Load packages and find the selected one
+      import('@/services/api').then(({ getPackages }) => {
+        getPackages().then(packages => {
+          const selectedPkg = packages.find(p => p.id === selectedPackageId);
+          if (selectedPkg) {
+            console.log('📦 Loading selected package:', selectedPkg.name);
+            setBookingData(prev => ({ ...prev, selectedPackage: selectedPkg }));
+          }
+        });
+      });
+    }
+  }, [selectedPackageId, bookingData.selectedPackage]);
 
   const steps = [
     { number: 1, title: 'Guest Registration', component: 'registration' },
@@ -65,8 +111,11 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
   };
 
   const renderCurrentStep = () => {
+    console.log('🔄 BookingFlow rendering step:', currentStep, 'with data:', bookingData);
+    
     switch (currentStep) {
       case 1:
+        console.log('📝 Rendering Guest Registration step');
         return (
           <GuestRegistration
             onComplete={handleStepComplete}
@@ -74,6 +123,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
           />
         );
       case 2:
+        console.log('📦 Rendering Package Selection step with packageId:', selectedPackageId);
         return (
           <PackageSelection
             selectedPackageId={selectedPackageId}

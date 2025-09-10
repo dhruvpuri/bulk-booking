@@ -1,5 +1,7 @@
 .container {
   padding: 48px;
+  background: var(--background);
+  min-height: 100vh;
 }
 
 .header {
@@ -19,19 +21,20 @@
   font-size: 40px;
   font-weight: bold;
   margin: 0 auto 24px auto;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
 }
 
 .title {
   font-size: 32px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0 0 12px 0;
   letter-spacing: -0.5px;
 }
 
 .subtitle {
   font-size: 18px;
-  color: #64748b;
+  color: var(--muted-foreground);
   margin: 0;
   line-height: 1.5;
 }
@@ -51,8 +54,8 @@
 }
 
 .section {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
 }
@@ -60,7 +63,7 @@
 .sectionTitle {
   font-size: 20px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0 0 24px 0;
 }
 
@@ -78,38 +81,38 @@
 
 .label {
   font-size: 14px;
-  color: #64748b;
+  color: var(--muted-foreground);
   font-weight: 500;
 }
 
 .value {
   font-size: 16px;
-  color: #1e293b;
+  color: var(--foreground);
   font-weight: 600;
 }
 
 .separator {
   margin: 0;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--border);
 }
 
 .packageCard {
-  background: #f8fafc;
+  background: var(--muted);
   border-radius: 8px;
   padding: 24px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
 }
 
 .packageName {
   font-size: 20px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0 0 8px 0;
 }
 
 .packageDescription {
   font-size: 14px;
-  color: #64748b;
+  color: var(--muted-foreground);
   line-height: 1.5;
   margin: 0 0 20px 0;
 }
@@ -130,13 +133,13 @@
 .statNumber {
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--foreground);
   letter-spacing: -0.5px;
 }
 
 .statLabel {
   font-size: 12px;
-  color: #64748b;
+  color: var(--muted-foreground);
   margin-top: 4px;
 }
 
@@ -169,13 +172,13 @@
 .stepContent h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0 0 4px 0;
 }
 
 .stepContent p {
   font-size: 14px;
-  color: #64748b;
+  color: var(--muted-foreground);
   margin: 0;
   line-height: 1.5;
 }
@@ -187,18 +190,25 @@
 }
 
 .quickActions,
-.support,
-.savings {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+.support {
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
+}
+
+.savings {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
 }
 
 .sidebarTitle {
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0 0 16px 0;
 }
 
@@ -214,7 +224,7 @@
 
 .supportContent p {
   font-size: 14px;
-  color: #64748b;
+  color: var(--muted-foreground);
   line-height: 1.5;
   margin: 0 0 16px 0;
 }
@@ -230,30 +240,24 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #1e293b;
+  color: var(--foreground);
 }
 
 .contactIcon {
   font-size: 16px;
 }
 
-.savings {
-  background: #dcfce7;
-  border-color: #bbf7d0;
-  text-align: center;
-}
-
 .savingsAmount {
   font-size: 32px;
   font-weight: 700;
-  color: #166534;
+  color: #10b981;
   letter-spacing: -0.5px;
   margin-bottom: 4px;
 }
 
 .savingsText {
   font-size: 14px;
-  color: #166534;
+  color: #10b981;
 }
 
 /* Mobile responsiveness */
@@ -331,5 +335,214 @@
   
   .savingsAmount {
     font-size: 28px;
+  }
+}
+/* Dark mode specific adjustments */
+:global(.dark) .section {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .packageCard {
+  background: var(--muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .quickActions,
+:global(.dark) .support {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .savings {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}/*
+ Date modifier styles */
+.dateModifierContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid var(--border);
+}
+
+/* Section header with actions */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.clearAllButton {
+  color: var(--destructive) !important;
+  font-size: 14px !important;
+  padding: 8px 16px !important;
+  height: auto !important;
+}
+
+.clearAllButton:hover {
+  background: var(--destructive) !important;
+  color: white !important;
+}
+
+/* Tentative dates styles */
+.tentativeDates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.datesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dateChip {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.dateChip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.dateChipRemovable {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 8px 12px 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dateChipRemovable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.dateText {
+  flex: 1;
+}
+
+.removeButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.removeButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.datesNote {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--muted);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+/* Dark mode adjustments for new elements */
+:global(.dark) .dateModifierContainer {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .datesNote {
+  background: var(--muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsiveness for new elements */
+@media (max-width: 768px) {
+  .dateModifierContainer {
+    padding: 24px;
+    margin: 0 16px;
+  }
+  
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .clearAllButton {
+    align-self: flex-end;
+  }
+  
+  .datesGrid {
+    justify-content: center;
+  }
+  
+  .dateChip,
+  .dateChipRemovable {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+  
+  .dateChipRemovable {
+    padding: 6px 10px 6px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dateModifierContainer {
+    padding: 20px;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 16px;
+  }
+  
+  .datesGrid {
+    gap: 8px;
+  }
+  
+  .dateChip,
+  .dateChipRemovable {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .dateChipRemovable {
+    padding: 4px 8px 4px 12px;
+    gap: 6px;
+  }
+  
+  .removeButton {
+    width: 18px;
+    height: 18px;
+    font-size: 14px;
   }
 }
