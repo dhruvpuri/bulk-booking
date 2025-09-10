@@ -1,38 +1,53 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTheme } from 'next-themes';
 import { Property } from '@/types';
 import { getProperties, updatePropertyBulkBooking } from '@/services/api';
 import PropertyCard from './PropertyCard';
 import BookingCalendar from '@/components/calendar/BookingCalendar';
+import AddPropertyModal from './AddPropertyModal';
 import styles from './HostDashboard.module.css';
+import { Moon, Sun } from 'lucide-react';
+
+import { User } from '@/types';
 
 interface HostDashboardProps {
-  user: any;
+  user: User;
+  onLogout?: () => void;
 }
 
-const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
+const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedView, setSelectedView] = useState<'properties' | 'analytics' | 'bookings' | 'settings'>('properties');
+  const [selectedView, setSelectedView] = useState<'properties' | 'analytics' | 'bookings' | 'settings' | 'add-property'>('properties');
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [showBookingCalendar, setShowBookingCalendar] = useState(false);
+  const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
+  // const [bookings, setBookings] = useState<Booking[]>([]); // TODO: Implement booking management
 
-  useEffect(() => {
-    loadProperties();
-  }, []);
-
-  const loadProperties = async () => {
+  const loadProperties = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getProperties(user.id);
+      const data = await getProperties(parseInt(user.id));
       setProperties(data);
-    } catch (err) {
+    } catch {
       setError('Failed to load properties');
     } finally {
       setLoading(false);
     }
+  }, [user.id]);
+
+  useEffect(() => {
+    setMounted(true);
+    loadProperties();
+  }, [loadProperties]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const handleToggleBulkBooking = async (propertyId: number, enabled: boolean) => {
@@ -41,7 +56,7 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
       setProperties(prev => 
         prev.map(p => p.id === propertyId ? updatedProperty : p)
       );
-    } catch (err) {
+    } catch {
       setError('Failed to update property');
     }
   };
@@ -67,6 +82,19 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
     setSelectedProperty(null);
   };
 
+  const handleAddProperty = () => {
+    setShowAddPropertyModal(true);
+  };
+
+  const handleCloseAddPropertyModal = () => {
+    setShowAddPropertyModal(false);
+  };
+
+  const handlePropertyAdded = (newProperty: Property) => {
+    setProperties(prev => [...prev, newProperty]);
+    setShowAddPropertyModal(false);
+  };
+
   if (showBookingCalendar && selectedProperty) {
     return (
       <BookingCalendar
@@ -77,15 +105,32 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
     );
   }
 
-  const enabledProperties = properties.filter(p => p.bulkBookingEnabled);
+  const enabledProperties = properties.filter(p => p.isBulkBookingEnabled);
   const participationRate = properties.length > 0 ? Math.round((enabledProperties.length / properties.length) * 100) : 0;
 
   return (
     <div className={styles.dashboard}>
       <div className={styles.sidebar}>
         <div className={styles.logo}>
-          <h1 className={styles.logoText}>BulkStay</h1>
-          <p className={styles.logoSubtext}>Host Dashboard</p>
+          <div className={styles.logoContent}>
+            <div>
+              <h1 className={styles.logoText}>BulkStay</h1>
+              <p className={styles.logoSubtext}>Host Dashboard</p>
+            </div>
+            {mounted && (
+              <button 
+                onClick={toggleTheme}
+                className={styles.themeToggle}
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-amber-500" />
+                ) : (
+                  <Moon className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                )}
+              </button>
+            )}
+          </div>
         </div>
 
         <nav className={styles.nav}>
@@ -120,25 +165,49 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
         </nav>
 
         <div className={styles.userSection}>
-          <div className={styles.userAvatar}>
-            <span className={styles.avatarText}>H</span>
-          </div>
           <div className={styles.userInfo}>
-            <span className={styles.userEmail}>{user.email}</span>
-            <span className={styles.userRole}>Host</span>
+            <div className={styles.userAvatar}>
+              <span className={styles.avatarText}>
+                {user.email.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div className={styles.userDetails}>
+              <span className={styles.userEmail}>{user.email}</span>
+              <span className={styles.userRole}>Host</span>
+            </div>
           </div>
-          <button className={styles.logoutButton}>Logout</button>
+          <button className={styles.logoutButton} onClick={onLogout}>
+            <span className={styles.logoutIcon}>🚪</span>
+            Logout
+          </button>
         </div>
       </div>
 
       <div className={styles.main}>
         {selectedView === 'properties' && (
           <>
-            <div className={styles.header}>
-              <h2 className={styles.title}>Property Management</h2>
-              <p className={styles.subtitle}>
-                Enable bulk booking for your properties to attract more guests and increase revenue.
+            <div className={styles.welcomeSection}>
+              <h1 className={styles.welcomeTitle}>
+                Welcome back, {user.email.split('@')[0]}! 👋
+              </h1>
+              <p className={styles.welcomeSubtitle}>
+                Manage your properties and track your bulk booking performance
               </p>
+            </div>
+
+            <div className={styles.header}>
+              <div className={styles.headerContent}>
+                <div>
+                  <h2 className={styles.title}>Property Management</h2>
+                  <p className={styles.subtitle}>
+                    Enable bulk booking for your properties to attract more guests and increase revenue.
+                  </p>
+                </div>
+                <button className={styles.addPropertyButton} onClick={handleAddProperty}>
+                  <span className={styles.addIcon}>+</span>
+                  Add Property
+                </button>
+              </div>
             </div>
 
             <div className={styles.stats}>
@@ -166,7 +235,7 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
                 <p>{error}</p>
                 <button onClick={loadProperties}>Try Again</button>
               </div>
-            ) : (
+            ) : properties.length > 0 ? (
               <div className={styles.propertiesGrid}>
                 {properties.map(property => (
                   <PropertyCard
@@ -176,6 +245,20 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
                     onConfigurePackages={handleConfigurePackages}
                   />
                 ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIcon}>🏨</div>
+                <h3 className={styles.emptyTitle}>No Properties Yet</h3>
+                <p className={styles.emptyDescription}>
+                  Get started by adding your first property to enable bulk booking and attract more guests.
+                </p>
+                <button 
+                  className={styles.emptyActionButton}
+                  onClick={handleAddProperty}
+                >
+                  Add Your First Property
+                </button>
               </div>
             )}
           </>
@@ -203,12 +286,12 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
                       <h3 className={styles.propertyBookingName}>{property.name}</h3>
                       <p className={styles.propertyBookingLocation}>{property.location}</p>
                       <div className={styles.propertyBookingStats}>
-                        <span>{property.totalBookings} bookings</span>
+                        <span>{property.totalBookings || 0} bookings</span>
                         <span>•</span>
-                        <span>{property.occupancyRate}% occupancy</span>
+                        <span>{property.occupancyRate || 0}% occupancy</span>
                         <span>•</span>
-                        <span className={property.bulkBookingEnabled ? styles.enabled : styles.disabled}>
-                          {property.bulkBookingEnabled ? 'Bulk booking enabled' : 'Not enabled'}
+                        <span className={property.isBulkBookingEnabled ? styles.enabled : styles.disabled}>
+                          {property.isBulkBookingEnabled ? 'Bulk booking enabled' : 'Not enabled'}
                         </span>
                       </div>
                     </div>
@@ -257,6 +340,13 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user }) => {
           </div>
         )}
       </div>
+
+      {showAddPropertyModal && (
+        <AddPropertyModal
+          onClose={handleCloseAddPropertyModal}
+          onPropertyAdded={handlePropertyAdded}
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import styles from './Calendar.module.css';
 
@@ -64,8 +64,13 @@ const Calendar: React.FC<CalendarProps> = ({
 
   const isDateDisabled = (date: Date) => {
     const dateStr = formatDate(date);
+    const today = new Date();
+    const fifteenDaysFromNow = new Date(today);
+    fifteenDaysFromNow.setDate(today.getDate() + 15);
+    
     return (
       date < minDate ||
+      date < fifteenDaysFromNow || // 15-day advance booking rule
       (maxDate && date > maxDate) ||
       disabledDates.includes(dateStr)
     );

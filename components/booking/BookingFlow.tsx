@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Package, User } from '@/types';
-import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import GuestRegistration from './GuestRegistration';
 import PackageSelection from './PackageSelection';
@@ -20,15 +19,16 @@ export interface BookingData {
   user?: User;
   selectedPackage?: Package;
   tentativeDates?: string[];
-  paymentInfo?: Record<string, any>;
+  paymentInfo?: Record<string, unknown>;
   bookingId?: string;
+  totalAmount?: number;
 }
 
 interface StepData {
   user?: User;
   selectedPackage?: Package;
   tentativeDates?: string[];
-  paymentInfo?: Record<string, any>;
+  paymentInfo?: Record<string, unknown>;
   bookingId?: string;
   totalAmount?: number;
 }
@@ -126,7 +126,6 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
         console.log('📦 Rendering Package Selection step with packageId:', selectedPackageId);
         return (
           <PackageSelection
-            selectedPackageId={selectedPackageId}
             onComplete={handleStepComplete}
             onBack={handleStepBack}
             bookingData={bookingData}

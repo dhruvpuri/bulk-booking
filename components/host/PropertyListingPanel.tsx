@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Property } from '@/types';
-import { getProperties, enableBulkBooking } from '@/services/api';
+import { getProperties, updatePropertyBulkBooking } from '@/services/api';
 import PropertyCard from './PropertyCard';
 import styles from './PropertyListingPanel.module.css';
 
@@ -35,7 +35,7 @@ const PropertyListingPanel: React.FC<PropertyListingPanelProps> = ({ onConfigure
   const handleToggleBulkBooking = async (propertyId: number, enabled: boolean) => {
     if (enabled) {
       try {
-        await enableBulkBooking(propertyId);
+        await updatePropertyBulkBooking(propertyId, true);
         setProperties(prev => 
           prev.map(prop => 
             prop.id === propertyId 
@@ -109,7 +109,7 @@ const PropertyListingPanel: React.FC<PropertyListingPanelProps> = ({ onConfigure
             key={property.id}
             property={property}
             onToggleBulkBooking={handleToggleBulkBooking}
-            onConfigurePackage={onConfigurePackage}
+            onConfigurePackages={onConfigurePackage}
           />
         ))}
       </div>

@@ -124,8 +124,9 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
       </div>
 
       <div className={styles.tips}>
-        <h4 className={styles.tipsTitle}>💡 Tips:</h4>
+        <h4 className={styles.tipsTitle}>💡 Important Information:</h4>
         <ul className={styles.tipsList}>
+          <li><strong>15-Day Advance Booking:</strong> You must confirm dates at least 15 days in advance</li>
           <li>These are tentative dates - you can modify them anytime</li>
           <li>Avoid peak seasons for better availability</li>
           <li>Book early for popular destinations</li>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { User, Package } from '@/types';
 import { getPackages } from '@/services/api';
 import Hero from '@/components/guest/Hero';
@@ -11,14 +12,16 @@ import BookingFlow from '@/components/booking/BookingFlow';
 import { Moon, Sun, User as UserIcon } from 'lucide-react';
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
   const [user, setUser] = useState<User | null>(null);
   const [currentView, setCurrentView] = useState<'home' | 'login' | 'host-dashboard' | 'booking'>('home');
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     loadPackages();
     // Check for existing user session
     const savedUser = localStorage.getItem('bulkstay_user');
@@ -37,13 +40,6 @@ export default function Home() {
       }
     } else {
       console.log('No saved user found in localStorage');
-    }
-    
-    // Check for dark mode preference
-    const savedTheme = localStorage.getItem('bulkstay_theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
     }
   }, []);
 
@@ -136,17 +132,8 @@ export default function Home() {
     console.log('=== END DEBUG ===');
   };
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('bulkstay_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('bulkstay_theme', 'light');
-    }
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const handleBookingComplete = () => {
@@ -188,17 +175,19 @@ export default function Home() {
           {/* Navigation Items */}
           <div className="flex items-center gap-6">
             {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-3 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-300 group shadow-lg hover:shadow-xl hover:scale-105"
-              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDarkMode ? (
-                <Sun className="w-6 h-6 text-amber-500 group-hover:rotate-12 transition-transform duration-300" />
-              ) : (
-                <Moon className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:-rotate-12 transition-transform duration-300" />
-              )}
-            </button>
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="p-3 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-300 group shadow-lg hover:shadow-xl hover:scale-105"
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-6 h-6 text-amber-500 group-hover:rotate-12 transition-transform duration-300" />
+                ) : (
+                  <Moon className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:-rotate-12 transition-transform duration-300" />
+                )}
+              </button>
+            )}
 
             {user ? (
               <div className="flex items-center gap-4">
@@ -265,7 +254,7 @@ export default function Home() {
   if (currentView === 'host-dashboard' && user?.role === 'host') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 transition-colors duration-500">
-        <HostDashboard user={user} />
+        <HostDashboard user={user} onLogout={handleLogout} />
       </div>
     );
   }

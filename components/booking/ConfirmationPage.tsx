@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { formatINR } from '@/services/api';
 import { BookingData } from './BookingFlow';
+import { Property } from '@/types';
 import AvailabilityCalendar from '@/components/calendar/AvailabilityCalendar';
+import PropertyBrowser from '@/components/guest/PropertyBrowser';
 import styles from './ConfirmationPage.module.css';
 
 interface ConfirmationPageProps {
@@ -18,6 +20,7 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
   const [showDateModifier, setShowDateModifier] = useState(false);
   const [modifiedDates, setModifiedDates] = useState<string[]>(tentativeDates);
   const [currentTentativeDates, setCurrentTentativeDates] = useState<string[]>(tentativeDates);
+  const [showPropertyBrowser, setShowPropertyBrowser] = useState(false);
 
   if (!selectedPackage || !bookingId) {
     return <div>Error: Missing booking information</div>;
@@ -58,6 +61,16 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
     console.log('Cleared all tentative dates');
   };
 
+  const handlePropertySelect = (property: Property) => {
+    console.log('Selected property:', property);
+    setShowPropertyBrowser(false);
+    // In a real app, you would navigate to property booking or save the selection
+  };
+
+  const handleClosePropertyBrowser = () => {
+    setShowPropertyBrowser(false);
+  };
+
   if (showDateModifier) {
     return (
       <div className={styles.container}>
@@ -77,6 +90,16 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
           />
         </div>
       </div>
+    );
+  }
+
+  if (showPropertyBrowser) {
+    return (
+      <PropertyBrowser
+        onSelectProperty={handlePropertySelect}
+        onBack={handleClosePropertyBrowser}
+        selectedPackage={selectedPackage}
+      />
     );
   }
 
@@ -202,6 +225,12 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onComplete, booking
                 <div className={styles.stepContent}>
                   <h4>Browse Properties</h4>
                   <p>Start exploring our partner properties across India and plan your stays.</p>
+                  <button 
+                    onClick={() => setShowPropertyBrowser(true)}
+                    className={styles.browsePropertiesButton}
+                  >
+                    Browse Properties Now
+                  </button>
                 </div>
               </div>
               <div className={styles.step}>

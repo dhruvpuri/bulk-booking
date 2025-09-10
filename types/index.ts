@@ -14,6 +14,7 @@ export interface Package {
   originalNightlyRate: number;
   discountedNightlyRate: number;
   validityMonths: number;
+  features?: string[];
 }
 
 export interface Property {
@@ -23,6 +24,12 @@ export interface Property {
   baseRate: number;
   imageUrl: string;
   isBulkBookingEnabled: boolean;
+  totalBookings?: number;
+  occupancyRate?: number;
+  description?: string;
+  amenities?: string[];
+  roomTypes?: string[];
+  hostId?: number;
 }
 
 export interface Booking {

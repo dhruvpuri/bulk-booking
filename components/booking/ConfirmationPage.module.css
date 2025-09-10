@@ -545,4 +545,22 @@
     height: 18px;
     font-size: 14px;
   }
+}/*
+ Browse Properties Button */
+.browsePropertiesButton {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.browsePropertiesButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }

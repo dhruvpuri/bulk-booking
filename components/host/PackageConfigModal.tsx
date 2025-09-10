@@ -32,7 +32,7 @@ const PackageConfigModal: React.FC<PackageConfigModalProps> = ({ propertyId, onC
     onClose();
   };
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | number | boolean) => {
     setConfig(prev => ({ ...prev, [field]: value }));
   };
 

@@ -48,7 +48,7 @@ const PackageExplorer: React.FC<PackageExplorerProps> = ({ packages, onReserve }
             <div className={styles.benefit}>
               <div className={styles.benefitIcon}>🔒</div>
               <div className={styles.benefitContent}>
-                <h4 className={styles.benefitTitle}>Lock in Today's Rates</h4>
+                <h4 className={styles.benefitTitle}>Lock in Today&apos;s Rates</h4>
                 <p className={styles.benefitDescription}>
                   Protect yourself from future price increases
                 </p>

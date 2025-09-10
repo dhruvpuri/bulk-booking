@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Package } from '@/types';
-import { Button } from '@/components/ui/button';
 import { formatINR } from '@/services/api';
 import styles from './PackageCard.module.css';
 

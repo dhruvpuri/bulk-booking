@@ -1,13 +1,15 @@
+import { User, Package } from '@/types';
+
 export interface StepData {
-  user?: any;
-  selectedPackage?: any;
+  user?: User;
+  selectedPackage?: Package;
   tentativeDates?: string[];
-  paymentInfo?: any;
+  paymentInfo?: PaymentInfo;
   bookingId?: string;
   totalAmount?: number;
 }
 
-export interface PaymentInfo {
+export interface PaymentInfo extends Record<string, unknown> {
   cardNumber: string;
   expiryDate: string;
   cvv: string;

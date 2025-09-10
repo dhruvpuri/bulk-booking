@@ -1,6 +1,6 @@
 .card {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -9,6 +9,7 @@
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
 }
 
 .imageContainer {
@@ -35,15 +36,15 @@
 }
 
 .enabledBadge {
-  background: #dcfce7;
-  color: #166534;
-  border: none;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .disabledBadge {
-  background: #f1f5f9;
-  color: #64748b;
-  border: none;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
 }
 
 .content {
@@ -60,7 +61,7 @@
 .title {
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -70,7 +71,7 @@
 }
 
 .location {
-  color: #64748b;
+  color: var(--muted-foreground);
   font-size: 14px;
   margin: 0 0 16px 0;
 }
@@ -85,13 +86,13 @@
 .rate {
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--foreground);
   letter-spacing: -0.5px;
 }
 
 .period {
   font-size: 14px;
-  color: #64748b;
+  color: var(--muted-foreground);
 }
 
 .stats {
@@ -100,8 +101,9 @@
   gap: 16px;
   margin-bottom: 20px;
   padding: 16px;
-  background: #f8fafc;
+  background: var(--muted);
   border-radius: 8px;
+  border: 1px solid var(--border);
 }
 
 .stat {
@@ -114,12 +116,12 @@
 .statValue {
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--foreground);
 }
 
 .statLabel {
   font-size: 12px;
-  color: #64748b;
+  color: var(--muted-foreground);
   margin-top: 2px;
 }
 
@@ -129,39 +131,40 @@
 
 .configButton {
   width: 100%;
-  border-color: #3b82f6;
-  color: #3b82f6;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
 }
 
 .configButton:hover {
-  background: #3b82f6;
-  color: white;
+  background: var(--primary) !important;
+  color: white !important;
 }
 
 .benefits {
   margin-top: 16px;
   padding: 16px;
-  background: #fffbeb;
+  background: rgba(245, 158, 11, 0.1);
   border-radius: 8px;
-  border: 1px solid #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .benefitsTitle {
   font-size: 14px;
   font-weight: 600;
-  color: #92400e;
+  color: #f59e0b;
   margin: 0 0 8px 0;
 }
 
 .benefitsList {
   margin: 0;
   padding-left: 16px;
-  color: #92400e;
+  color: #f59e0b;
 }
 
 .benefitsList li {
   font-size: 12px;
   margin-bottom: 4px;
+  color: var(--muted-foreground);
 }
 
 .benefitsList li:last-child {
@@ -196,4 +199,52 @@
   .statLabel {
     font-size: 11px;
   }
+}
+/* Dark mode adjustments */
+:global(.dark) .card {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+:global(.dark) .card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary);
+}
+
+:global(.dark) .stats {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .enabledBadge {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+:global(.dark) .disabledBadge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted-foreground);
+}
+
+:global(.dark) .benefits {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+:global(.dark) .benefitsTitle {
+  color: #f59e0b;
+}
+
+:global(.dark) .configButton {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+:global(.dark) .configButton:hover {
+  background: var(--primary) !important;
+  color: white !important;
 }

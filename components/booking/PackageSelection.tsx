@@ -7,10 +7,7 @@ import AvailabilityCalendar from '@/components/calendar/AvailabilityCalendar';
 import { BookingData } from './BookingFlow';
 import styles from './PackageSelection.module.css';
 
-interface StepData {
-  selectedPackage?: any;
-  tentativeDates?: string[];
-}
+import { StepData } from './types';
 
 interface PackageSelectionProps {
   onComplete: (data: StepData) => void;
@@ -124,7 +121,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({ onComplete, onBack,
             <div className={styles.features}>
               <h4 className={styles.featuresTitle}>Package Includes:</h4>
               <ul className={styles.featuresList}>
-                {selectedPackage.features.map((feature: string, index: number) => (
+                {selectedPackage.features?.map((feature: string, index: number) => (
                   <li key={index} className={styles.feature}>
                     <span className={styles.checkmark}>✓</span>
                     <span>{feature}</span>

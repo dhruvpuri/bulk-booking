@@ -213,10 +213,36 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
             <h4 className={styles.demoTitle}>Demo Credentials:</h4>
             <div className={styles.demoOptions}>
               <div className={styles.demoOption}>
-                <strong>Guest:</strong> guest@example.com / password
+                <strong>Guest:</strong> guest@bulkstay.com / password
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData(prev => ({
+                      ...prev,
+                      email: 'guest@bulkstay.com',
+                      password: 'password'
+                    }));
+                  }}
+                  className={styles.quickFillButton}
+                >
+                  Quick Fill
+                </button>
               </div>
               <div className={styles.demoOption}>
-                <strong>Host:</strong> host@example.com / password
+                <strong>Host:</strong> host@bulkstay.com / password
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData(prev => ({
+                      ...prev,
+                      email: 'host@bulkstay.com',
+                      password: 'password'
+                    }));
+                  }}
+                  className={styles.quickFillButton}
+                >
+                  Quick Fill
+                </button>
               </div>
             </div>
           </div>

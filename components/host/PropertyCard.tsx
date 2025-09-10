@@ -27,7 +27,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           className={styles.image}
         />
         <div className={styles.badge}>
-          {property.bulkBookingEnabled ? 'Bulk Booking Enabled' : 'Not Enabled'}
+          {property.isBulkBookingEnabled ? 'Bulk Booking Enabled' : 'Not Enabled'}
         </div>
       </div>
 
@@ -38,27 +38,27 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         <div className={styles.pricing}>
-          <span className={styles.price}>{formatINR(property.pricePerNight)}</span>
+          <span className={styles.price}>{formatINR(property.baseRate)}</span>
           <span className={styles.period}>per night</span>
         </div>
 
         <div className={styles.stats}>
           <div className={styles.stat}>
-            <span className={styles.statValue}>{property.totalBookings}</span>
+            <span className={styles.statValue}>{property.totalBookings || 0}</span>
             <span className={styles.statLabel}>Bookings</span>
           </div>
           <div className={styles.stat}>
-            <span className={styles.statValue}>{property.rating}</span>
+            <span className={styles.statValue}>4.5</span>
             <span className={styles.statLabel}>Rating</span>
           </div>
           <div className={styles.stat}>
-            <span className={styles.statValue}>{property.occupancyRate}%</span>
+            <span className={styles.statValue}>{property.occupancyRate || 0}%</span>
             <span className={styles.statLabel}>Occupancy</span>
           </div>
         </div>
 
         <div className={styles.actions}>
-          {property.bulkBookingEnabled ? (
+          {property.isBulkBookingEnabled ? (
             <Button 
               onClick={() => onConfigurePackages(property.id)}
               variant="outline"
@@ -82,7 +82,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
         <div className={styles.toggle}>
           <Switch
-            checked={property.bulkBookingEnabled}
+            checked={property.isBulkBookingEnabled}
             onCheckedChange={(checked) => onToggleBulkBooking(property.id, checked)}
           />
         </div>

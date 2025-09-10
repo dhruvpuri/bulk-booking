@@ -8,14 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { registerUser } from '@/services/api';
 import styles from './GuestRegistration.module.css';
 
-interface StepData {
-  user?: any;
-  selectedPackage?: any;
-  tentativeDates?: string[];
-  paymentInfo?: any;
-  bookingId?: string;
-  totalAmount?: number;
-}
+import { StepData } from './types';
 
 interface GuestRegistrationProps {
   onComplete: (data: StepData) => void;

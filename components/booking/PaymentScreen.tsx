@@ -9,14 +9,7 @@ import { createBooking, formatINR } from '@/services/api';
 import { BookingData } from './BookingFlow';
 import styles from './PaymentScreen.module.css';
 
-interface StepData {
-  user?: any;
-  selectedPackage?: any;
-  tentativeDates?: string[];
-  paymentInfo?: any;
-  bookingId?: string;
-  totalAmount?: number;
-}
+import { StepData } from './types';
 
 interface PaymentScreenProps {
   onComplete: (data: StepData) => void;
@@ -63,7 +56,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onComplete, onBack, booki
       
       // Create booking
       const booking = await createBooking({
-        userId: bookingData.user?.id,
+        userId: bookingData.user?.id ? parseInt(bookingData.user.id) : undefined,
         packageId: selectedPackage.id,
         tentativeDates: bookingData.tentativeDates,
         totalAmount: total
@@ -74,7 +67,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onComplete, onBack, booki
         bookingId: booking.id,
         totalAmount: total
       });
-    } catch (err) {
+    } catch {
       setError('Payment failed. Please try again.');
     } finally {
       setLoading(false);

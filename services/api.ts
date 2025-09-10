@@ -42,67 +42,151 @@ const mockProperties: Property[] = [
     id: 1,
     name: 'Oceanview Villa',
     location: 'Goa, India',
-    pricePerNight: 37500, // ₹37,500
+    baseRate: 18000, // ₹18,000
     imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    totalBookings: 24,
-    occupancyRate: 92,
-    bulkBookingEnabled: true,
+    totalBookings: 47,
+    occupancyRate: 85,
+    isBulkBookingEnabled: true,
+    description: 'Luxury oceanview villa with private beach access',
+    amenities: ['WiFi', 'Pool', 'Beach Access', 'AC', 'Parking'],
+    roomTypes: ['Deluxe', 'Suite'],
     hostId: 1
   },
   {
     id: 2,
     name: 'Mountain Retreat',
     location: 'Manali, Himachal Pradesh',
-    pricePerNight: 26700, // ₹26,700
+    baseRate: 12000, // ₹12,000
     imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    totalBookings: 24,
-    occupancyRate: 92,
-    bulkBookingEnabled: false,
+    totalBookings: 32,
+    occupancyRate: 78,
+    isBulkBookingEnabled: true,
+    description: 'Cozy mountain retreat with stunning valley views',
+    amenities: ['WiFi', 'Fireplace', 'Mountain View', 'Parking'],
+    roomTypes: ['Standard', 'Deluxe'],
     hostId: 1
   },
   {
     id: 3,
     name: 'City Loft',
     location: 'Mumbai, Maharashtra',
-    pricePerNight: 23300, // ₹23,300
+    baseRate: 15000, // ₹15,000
     imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    totalBookings: 24,
+    totalBookings: 63,
     occupancyRate: 92,
-    bulkBookingEnabled: true,
+    isBulkBookingEnabled: true,
+    description: 'Modern city loft in the heart of Mumbai',
+    amenities: ['WiFi', 'AC', 'City View', 'Gym', 'Parking'],
+    roomTypes: ['Studio', 'One Bedroom'],
     hostId: 1
   },
   {
     id: 4,
     name: 'Beachfront Condo',
     location: 'Kochi, Kerala',
-    pricePerNight: 31700, // ₹31,700
+    baseRate: 14500, // ₹14,500
     imageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    totalBookings: 24,
-    occupancyRate: 92,
-    bulkBookingEnabled: false,
+    totalBookings: 28,
+    occupancyRate: 71,
+    isBulkBookingEnabled: false,
+    description: 'Beautiful beachfront condo with ocean views',
+    amenities: ['WiFi', 'Beach Access', 'Pool', 'AC', 'Balcony'],
+    roomTypes: ['One Bedroom', 'Two Bedroom'],
     hostId: 1
+  },
+  {
+    id: 5,
+    name: 'Heritage Haveli',
+    location: 'Jaipur, Rajasthan',
+    baseRate: 16500, // ₹16,500
+    imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    totalBookings: 41,
+    occupancyRate: 88,
+    isBulkBookingEnabled: true,
+    description: 'Traditional Rajasthani haveli with royal architecture',
+    amenities: ['WiFi', 'Heritage Architecture', 'Courtyard', 'AC', 'Cultural Tours'],
+    roomTypes: ['Royal Suite', 'Heritage Room'],
+    hostId: 1
+  },
+  {
+    id: 6,
+    name: 'Backwater Resort',
+    location: 'Alleppey, Kerala',
+    baseRate: 13000, // ₹13,000
+    imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    totalBookings: 35,
+    occupancyRate: 82,
+    isBulkBookingEnabled: true,
+    description: 'Serene backwater resort with houseboat experience',
+    amenities: ['WiFi', 'Backwater View', 'Boat Rides', 'AC', 'Ayurvedic Spa'],
+    roomTypes: ['Water Villa', 'Garden View'],
+    hostId: 1
+  },
+  // Guest properties for browsing
+  {
+    id: 7,
+    name: 'Himalayan Lodge',
+    location: 'Rishikesh, Uttarakhand',
+    baseRate: 11000, // ₹11,000
+    imageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    totalBookings: 29,
+    occupancyRate: 75,
+    isBulkBookingEnabled: true,
+    description: 'Peaceful lodge near the Ganges with yoga sessions',
+    amenities: ['WiFi', 'Yoga Studio', 'River View', 'Meditation Hall', 'Organic Food'],
+    roomTypes: ['Deluxe', 'Premium'],
+    hostId: 2
+  },
+  {
+    id: 8,
+    name: 'Desert Camp',
+    location: 'Jaisalmer, Rajasthan',
+    baseRate: 9500, // ₹9,500
+    imageUrl: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=800&q=80',
+    totalBookings: 22,
+    occupancyRate: 68,
+    isBulkBookingEnabled: true,
+    description: 'Luxury desert camp with camel safari experiences',
+    amenities: ['WiFi', 'Desert Safari', 'Cultural Shows', 'Bonfire', 'Star Gazing'],
+    roomTypes: ['Luxury Tent', 'Royal Tent'],
+    hostId: 2
   }
 ];
 
 const mockUsers: User[] = [
   {
-    id: 1,
-    email: 'guest@example.com',
+    id: '1',
+    email: 'guest@bulkstay.com',
     role: 'guest',
     travelFrequency: 'monthly'
   },
   {
-    id: 2,
-    email: 'host@example.com',
+    id: '2',
+    email: 'host@bulkstay.com',
     role: 'host'
   }
 ];
 
-let mockBookings: Booking[] = [];
+let mockBookings: Booking[] = [
+  {
+    id: 'BK1704067200000',
+    userId: '1',
+    packageId: 2,
+    tentativeDates: ['2024-12-15', '2024-12-16', '2024-12-17', '2025-01-10', '2025-01-11'],
+    totalAmount: 74999,
+    status: 'confirmed',
+    createdAt: '2024-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'BK1706745600000',
+    userId: '1',
+    packageId: 1,
+    tentativeDates: ['2024-11-20', '2024-11-21', '2024-12-05', '2024-12-06'],
+    totalAmount: 24999,
+    status: 'confirmed',
+    createdAt: '2024-02-01T00:00:00.000Z'
+  }
+];
 
 // API functions
 export const getPackages = async (): Promise<Package[]> => {
@@ -140,7 +224,7 @@ export const registerUser = async (
   }
   
   const newUser: User = {
-    id: mockUsers.length + 1,
+    id: (mockUsers.length + 1).toString(),
     email,
     role,
     travelFrequency
@@ -160,7 +244,7 @@ export const createBooking = async (bookingData: {
   
   const booking: Booking = {
     id: `BK${Date.now()}`,
-    userId: bookingData.userId || 1,
+    userId: (bookingData.userId || 1).toString(),
     packageId: bookingData.packageId,
     tentativeDates: bookingData.tentativeDates || [],
     totalAmount: bookingData.totalAmount,
@@ -183,7 +267,7 @@ export const updatePropertyBulkBooking = async (
     throw new Error('Property not found');
   }
   
-  property.bulkBookingEnabled = enabled;
+  property.isBulkBookingEnabled = enabled;
   return property;
 };
 
