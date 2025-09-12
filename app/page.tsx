@@ -2,23 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { User, Package } from '@/types';
-import { getPackages } from '@/services/api';
+import { User, Package, Property } from '@/types';
+import { getPackages, getProperties } from '@/services/api';
 import Hero from '@/components/guest/Hero';
 import PackageExplorer from '@/components/guest/PackageExplorer';
+import PropertyBrowser from '@/components/guest/PropertyBrowser';
 import LoginSignup from '@/components/auth/LoginSignup';
 import HostDashboard from '@/components/host/HostDashboard';
 import BookingFlow from '@/components/booking/BookingFlow';
-import { Moon, Sun, User as UserIcon } from 'lucide-react';
+import { Moon, Sun, User as UserIcon, Search, MapPin, Star } from 'lucide-react';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [user, setUser] = useState<User | null>(null);
-  const [currentView, setCurrentView] = useState<'home' | 'login' | 'host-dashboard' | 'booking'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'login' | 'host-dashboard' | 'booking' | 'properties'>('home');
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [showPackagesForProperty, setShowPackagesForProperty] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -144,73 +147,82 @@ export default function Home() {
   const handleBackToHome = () => {
     setCurrentView('home');
     setSelectedPackage(null);
+    setSelectedProperty(null);
+    setShowPackagesForProperty(false);
   };
 
-  // Professional Navigation header
+
+
+  const handleSelectProperty = (property: Property) => {
+    setSelectedProperty(property);
+    setShowPackagesForProperty(true);
+    // Scroll to packages section
+    setTimeout(() => {
+      const packagesSection = document.getElementById('packages');
+      if (packagesSection) {
+        packagesSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleBackToProperties = () => {
+    setSelectedProperty(null);
+    setShowPackagesForProperty(false);
+    setSelectedPackage(null);
+  };
+
+  // Clean Navigation header
   const renderHeader = () => (
-    <header className="sticky top-0 z-50 backdrop-blur-3xl bg-white/95 dark:bg-slate-900/95 border-b border-slate-200/20 dark:border-slate-700/20 shadow-lg shadow-slate-900/5">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12">
-        <div className="flex justify-between items-center h-24">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50">
+      <div className="px-6 lg:px-12">
+        <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <div 
             onClick={handleBackToHome}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer"
           >
-            <div className="relative">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-cyan-500 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-                <span className="text-white font-bold text-xl">B</span>
-              </div>
-              <div className="absolute -inset-1 bg-gradient-to-br from-indigo-600 via-purple-600 to-cyan-500 rounded-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">B</span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-                BulkStay
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium -mt-0.5">
-                Premium Bulk Booking
-              </span>
-            </div>
+            <span className="text-xl font-bold text-slate-900 dark:text-white">
+              BulkStay
+            </span>
           </div>
           
           {/* Navigation Items */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {/* Dark Mode Toggle */}
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="p-3 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-500 transition-all duration-300 group shadow-lg hover:shadow-xl hover:scale-105"
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-6 h-6 text-amber-500 group-hover:rotate-12 transition-transform duration-300" />
+                  <Sun className="w-5 h-5 text-amber-500" />
                 ) : (
-                  <Moon className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:-rotate-12 transition-transform duration-300" />
+                  <Moon className="w-5 h-5 text-slate-600" />
                 )}
               </button>
             )}
 
             {user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 {/* User Info */}
-                <div className="hidden sm:flex items-center gap-4 px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
-                    <UserIcon className="w-5 h-5 text-white" />
+                <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <UserIcon className="w-3 h-3 text-white" />
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                      {user.email.split('@')[0]}
-                    </span>
-                    <span className="text-sm text-slate-500 dark:text-slate-400 capitalize font-medium">
-                      {user.role}
-                    </span>
-                  </div>
+                  <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                    {user.email.split('@')[0]}
+                  </span>
                 </div>
 
                 {/* Dashboard Button for Hosts */}
                 {user.role === 'host' && currentView !== 'host-dashboard' && (
                   <button
                     onClick={() => setCurrentView('host-dashboard')}
-                    className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
                   >
                     Dashboard
                   </button>
@@ -219,7 +231,7 @@ export default function Home() {
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="px-6 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-400 dark:hover:border-slate-500 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   Sign Out
                 </button>
@@ -227,9 +239,10 @@ export default function Home() {
             ) : (
               <button
                 onClick={() => setCurrentView('login')}
-                className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                className="relative px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden group"
               >
-                Sign In
+                <span className="relative z-10">Sign In</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
             )}
           </div>
@@ -272,6 +285,18 @@ export default function Home() {
     );
   }
 
+  if (currentView === 'properties') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 transition-colors duration-500">
+        {renderHeader()}
+        <PropertyBrowser
+          onSelectProperty={handleSelectProperty}
+          onBack={handleBackToHome}
+        />
+      </div>
+    );
+  }
+
   // Default home view
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 transition-colors duration-500">
@@ -279,20 +304,281 @@ export default function Home() {
       {renderHeader()}
       <Hero />
 
-
-      {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"></div>
-            <p className="text-slate-600 dark:text-slate-300 font-medium">Loading amazing packages...</p>
-          </div>
+      {/* Property Search Section */}
+      <PropertySearchSection 
+        onSelectProperty={handleSelectProperty} 
+        selectedProperty={selectedProperty}
+        onBackToProperties={handleBackToProperties}
+      />
+      
+      {/* Packages Section - Only show when property is selected */}
+      {showPackagesForProperty && selectedProperty && (
+        <div id="packages">
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"></div>
+                <p className="text-slate-600 dark:text-slate-300 font-medium">Loading packages for {selectedProperty.name}...</p>
+              </div>
+            </div>
+          ) : (
+            <PackageExplorer 
+              packages={packages}
+              onReserve={handleReservePackage}
+              selectedProperty={selectedProperty}
+              onBackToProperties={handleBackToProperties}
+            />
+          )}
         </div>
-      ) : (
-        <PackageExplorer 
-          packages={packages}
-          onReserve={handleReservePackage}
-        />
       )}
     </div>
   );
 }
+
+// Property Search Section Component
+const PropertySearchSection: React.FC<{ 
+  onSelectProperty: (property: Property) => void;
+  selectedProperty: Property | null;
+  onBackToProperties: () => void;
+}> = ({ onSelectProperty, selectedProperty, onBackToProperties }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadProperties();
+  }, []);
+
+  const loadProperties = async () => {
+    try {
+      const allProperties = await getProperties();
+      // Only show properties with bulk booking enabled
+      const enabledProperties = allProperties.filter(p => p.isBulkBookingEnabled);
+      setProperties(enabledProperties);
+    } catch (error) {
+      console.error('Failed to load properties:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const locations = [...new Set(properties.map(p => p.location))];
+  
+  const filteredProperties = properties.filter(property => {
+    const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         property.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLocation = selectedLocation === 'all' || property.location === selectedLocation;
+    return matchesSearch && matchesLocation;
+  });
+
+  return (
+    <section id="properties" className="py-20 px-6 lg:px-12 bg-white dark:bg-slate-900">
+      <div className="w-full">
+        {/* Header */}
+        <div className="text-center mb-16">
+          {selectedProperty ? (
+            <div>
+              <button
+                onClick={onBackToProperties}
+                className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium mb-6"
+              >
+                ← Back to all properties
+              </button>
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+                {selectedProperty.name}
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                Selected property • Now choose your bulk booking package below
+              </p>
+            </div>
+          ) : (
+            <>
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+                Premium Properties
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                Find your perfect stay from our curated collection of luxury accommodations
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Search Bar - Only show when no property is selected */}
+        {!selectedProperty && (
+          <div className="mb-16 max-w-4xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4 p-6 bg-slate-50 dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+              <div className="flex-1 relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search properties..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                />
+              </div>
+              <div className="relative">
+                <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                <select
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="pl-11 pr-10 py-3.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 min-w-[220px] appearance-none cursor-pointer"
+                >
+                  <option value="all">All Locations</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Properties Grid - Only show when no property is selected */}
+        {!selectedProperty && (
+          <>
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-12 h-12 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"></div>
+                  <p className="text-slate-600 dark:text-slate-300 font-medium">Loading properties...</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="mb-8 text-center">
+                  <p className="text-slate-600 dark:text-slate-300">
+                    {filteredProperties.length} properties available
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                  {filteredProperties.map(property => (
+                    <div
+                      key={property.id}
+                      className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 dark:border-slate-700"
+                    >
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={property.imageUrl}
+                          alt={property.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                          Available
+                        </div>
+                        <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-sm text-white px-3 py-2 rounded-lg">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm font-medium">4.{Math.floor(Math.random() * 5) + 5}</span>
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 line-clamp-1">
+                          {property.name}
+                        </h4>
+                        <p className="text-slate-600 dark:text-slate-300 mb-3 flex items-center gap-2 text-sm">
+                          <MapPin className="w-4 h-4 flex-shrink-0" />
+                          <span className="line-clamp-1">{property.location}</span>
+                        </p>
+
+                        <div className="mb-4">
+                          <span className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                            ₹{property.baseRate.toLocaleString()}
+                          </span>
+                          <span className="text-slate-500 dark:text-slate-400 text-sm ml-1">/night</span>
+                        </div>
+
+                        <button
+                          onClick={() => onSelectProperty(property)}
+                          className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+                        >
+                          View Packages
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {filteredProperties.length === 0 && (
+                  <div className="text-center py-20">
+                    <div className="text-6xl mb-4">🏨</div>
+                    <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-2">No Properties Found</h3>
+                    <p className="text-slate-600 dark:text-slate-300">Try adjusting your search or location filters</p>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        {/* Selected Property Details - Show when property is selected */}
+        {selectedProperty && (
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
+              <div className="relative h-64 overflow-hidden">
+                <img
+                  src={selectedProperty.imageUrl}
+                  alt={selectedProperty.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MapPin className="w-4 h-4" />
+                    <span>{selectedProperty.location}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span className="font-medium">4.{Math.floor(Math.random() * 5) + 5}</span>
+                    </div>
+                    <div>
+                      ₹{selectedProperty.baseRate.toLocaleString()}/night
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="p-6">
+                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Choose Your Package</h4>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm">
+                    Select from flexible bulk booking packages below to save up to 30% on your stays.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Minimal Footer - Only show when no property is selected */}
+        {!selectedProperty && (
+          <footer className="mt-16 bg-slate-800 dark:bg-slate-900">
+            <div className="px-6 lg:px-12">
+              <div className="py-8">
+                {/* Copyright and Links */}
+                <div className="text-center mb-6">
+                  <p className="text-sm text-slate-400 mb-4">
+                    © 2024 BulkStay. All rights reserved.
+                  </p>
+                  <div className="flex justify-center gap-8 text-sm text-slate-400">
+                    <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" className="hover:text-white transition-colors">Support</a>
+                  </div>
+                </div>
+                
+                {/* Partner Logos */}
+                <div className="flex justify-center items-center gap-8 opacity-60">
+                  <div className="text-slate-400 text-xs font-medium">Trusted by leading travel platforms</div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        )}
+      </div>
+    </section>
+  );
+};

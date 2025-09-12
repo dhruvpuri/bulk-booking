@@ -156,13 +156,13 @@ const mockProperties: Property[] = [
 const mockUsers: User[] = [
   {
     id: '1',
-    email: 'guest@bulkstay.com',
+    email: 'guest@example.com',
     role: 'guest',
     travelFrequency: 'monthly'
   },
   {
     id: '2',
-    email: 'host@bulkstay.com',
+    email: 'host@example.com',
     role: 'host'
   }
 ];

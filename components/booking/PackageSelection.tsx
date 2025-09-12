@@ -207,7 +207,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({ onComplete, onBack,
             Skip Dates
           </Button>
           <Button onClick={() => setShowCalendar(true)}>
-            {selectedDates.length > 0 ? 'Continue to Payment' : 'Select Dates & Continue'}
+            {selectedDates.length > 0 ? 'Continue to Properties' : 'Select Dates & Continue'}
           </Button>
         </div>
       </div>

@@ -1,8 +1,9 @@
-import { User, Package } from '@/types';
+import { User, Package, Property } from '@/types';
 
 export interface StepData {
   user?: User;
   selectedPackage?: Package;
+  selectedProperty?: Property;
   tentativeDates?: string[];
   paymentInfo?: PaymentInfo;
   bookingId?: string;

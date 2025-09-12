@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Package, User } from '@/types';
+import { Package, User, Property } from '@/types';
 import { Progress } from '@/components/ui/progress';
 import GuestRegistration from './GuestRegistration';
 import PackageSelection from './PackageSelection';
+import PropertyBrowser from '@/components/guest/PropertyBrowser';
 import PaymentScreen from './PaymentScreen';
 import ConfirmationPage from './ConfirmationPage';
 import styles from './BookingFlow.module.css';
@@ -18,6 +19,7 @@ interface BookingFlowProps {
 export interface BookingData {
   user?: User;
   selectedPackage?: Package;
+  selectedProperty?: Property;
   tentativeDates?: string[];
   paymentInfo?: Record<string, unknown>;
   bookingId?: string;
@@ -27,6 +29,7 @@ export interface BookingData {
 interface StepData {
   user?: User;
   selectedPackage?: Package;
+  selectedProperty?: Property;
   tentativeDates?: string[];
   paymentInfo?: Record<string, unknown>;
   bookingId?: string;
@@ -86,8 +89,9 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
   const steps = [
     { number: 1, title: 'Guest Registration', component: 'registration' },
     { number: 2, title: 'Package Selection', component: 'selection' },
-    { number: 3, title: 'Payment', component: 'payment' },
-    { number: 4, title: 'Confirmation', component: 'confirmation' }
+    { number: 3, title: 'Property Selection', component: 'property' },
+    { number: 4, title: 'Payment', component: 'payment' },
+    { number: 5, title: 'Confirmation', component: 'confirmation' }
   ];
 
   const progress = (currentStep / steps.length) * 100;
@@ -132,6 +136,17 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
           />
         );
       case 3:
+        console.log('🏨 Rendering Property Selection step');
+        return (
+          <PropertyBrowser
+            onSelectProperty={(property: Property) => {
+              handleStepComplete({ selectedProperty: property });
+            }}
+            onBack={handleStepBack}
+            selectedPackage={bookingData.selectedPackage}
+          />
+        );
+      case 4:
         return (
           <PaymentScreen
             onComplete={handleStepComplete}
@@ -139,7 +154,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
             bookingData={bookingData}
           />
         );
-      case 4:
+      case 5:
         return (
           <ConfirmationPage
             onComplete={onComplete}

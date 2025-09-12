@@ -4,10 +4,10 @@ import React from 'react';
 import styles from './Hero.module.css';
 
 const Hero: React.FC = () => {
-  const scrollToPackages = () => {
-    const packagesSection = document.getElementById('packages');
-    if (packagesSection) {
-      packagesSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToProperties = () => {
+    const propertiesSection = document.getElementById('properties');
+    if (propertiesSection) {
+      propertiesSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -16,31 +16,31 @@ const Hero: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            Book Your Dream Stays in{' '}
-            <span className={styles.titleGradient}>Bulk</span>, Save Big
+            Find Your Perfect{' '}
+            <span className={styles.titleGradient}>Hotel</span>, Choose Your Plan
           </h1>
           <p className={styles.subtitle}>
-            Purchase nights upfront at discounted rates. Use them flexibly across premium properties whenever you want to travel. Experience luxury accommodation at unbeatable prices.
+            Discover premium hotels across India, then select flexible bulk booking packages that save you up to 30%. Book nights upfront and use them whenever you travel.
           </p>
           <div className={styles.features}>
             <div className={styles.feature}>
+              <span className={styles.featureIcon}>🏨</span>
+              <span>Premium hotels nationwide</span>
+            </div>
+            <div className={styles.feature}>
               <span className={styles.featureIcon}>💰</span>
-              <span>Save up to 30% on nightly rates</span>
+              <span>Bulk packages save up to 30%</span>
             </div>
             <div className={styles.feature}>
               <span className={styles.featureIcon}>📅</span>
-              <span>Use nights flexibly over 12-24 months</span>
-            </div>
-            <div className={styles.feature}>
-              <span className={styles.featureIcon}>🏨</span>
-              <span>Access to premium properties nationwide</span>
+              <span>Flexible usage over 12-24 months</span>
             </div>
           </div>
           <button 
-            onClick={scrollToPackages}
+            onClick={scrollToProperties}
             className={styles.ctaButton}
           >
-            Explore Packages
+            Browse Hotels
             <span style={{ marginLeft: '8px' }}>→</span>
           </button>
         </div>
