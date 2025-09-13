@@ -43,7 +43,7 @@ const mockProperties: Property[] = [
     name: 'Oceanview Villa',
     location: 'Goa, India',
     baseRate: 18000, // ₹18,000
-    imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80',
     totalBookings: 47,
     occupancyRate: 85,
     isBulkBookingEnabled: true,
@@ -71,7 +71,7 @@ const mockProperties: Property[] = [
     name: 'City Loft',
     location: 'Mumbai, Maharashtra',
     baseRate: 15000, // ₹15,000
-    imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
     totalBookings: 63,
     occupancyRate: 92,
     isBulkBookingEnabled: true,
@@ -85,7 +85,7 @@ const mockProperties: Property[] = [
     name: 'Beachfront Condo',
     location: 'Kochi, Kerala',
     baseRate: 14500, // ₹14,500
-    imageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80',
     totalBookings: 28,
     occupancyRate: 71,
     isBulkBookingEnabled: false,
@@ -99,7 +99,7 @@ const mockProperties: Property[] = [
     name: 'Heritage Haveli',
     location: 'Jaipur, Rajasthan',
     baseRate: 16500, // ₹16,500
-    imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80',
     totalBookings: 41,
     occupancyRate: 88,
     isBulkBookingEnabled: true,
@@ -128,7 +128,7 @@ const mockProperties: Property[] = [
     name: 'Himalayan Lodge',
     location: 'Rishikesh, Uttarakhand',
     baseRate: 11000, // ₹11,000
-    imageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
     totalBookings: 29,
     occupancyRate: 75,
     isBulkBookingEnabled: true,
@@ -156,13 +156,13 @@ const mockProperties: Property[] = [
 const mockUsers: User[] = [
   {
     id: '1',
-    email: 'guest@example.com',
+    email: 'guest@bulkstay.com',
     role: 'guest',
     travelFrequency: 'monthly'
   },
   {
     id: '2',
-    email: 'host@example.com',
+    email: 'host@bulkstay.com',
     role: 'host'
   }
 ];
@@ -200,13 +200,26 @@ export const getProperties = async (hostId?: number): Promise<Property[]> => {
 };
 
 export const authenticateUser = async (email: string, password: string): Promise<User> => {
+  console.log('🔐 [TypeScript API] Authentication attempt:', { email, password });
+  console.log('📋 [TypeScript API] Available mock users:', mockUsers);
+  console.log('🔍 [TypeScript API] This is the TypeScript version of the API');
+  
   await new Promise(resolve => setTimeout(resolve, 1000));
   
   const user = mockUsers.find(u => u.email === email);
-  if (!user || password !== 'password') {
-    throw new Error('Invalid credentials');
+  console.log('👤 [TypeScript API] Found user:', user);
+  
+  if (!user) {
+    console.log('❌ [TypeScript API] User not found for email:', email);
+    throw new Error('Invalid credentials - user not found');
   }
   
+  if (password !== 'password') {
+    console.log('❌ [TypeScript API] Password mismatch. Expected: "password", Got:', password);
+    throw new Error('Invalid credentials - wrong password');
+  }
+  
+  console.log('✅ [TypeScript API] Authentication successful for user:', user);
   return user;
 };
 

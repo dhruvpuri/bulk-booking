@@ -1,7 +1,7 @@
 .container {
   min-height: 100vh;
   background: #f8fafc;
-  padding: 24px;
+  padding: 32px 24px;
 }
 
 :global(.dark) .container {
@@ -9,11 +9,11 @@
 }
 
 .header {
-  max-width: 800px;
-  margin: 0 auto 32px auto;
+  max-width: 1000px;
+  margin: 0 auto 48px auto;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
 }
 
 .backButton {
@@ -51,12 +51,12 @@
 }
 
 .progressSection {
-  max-width: 800px;
-  margin: 0 auto 48px auto;
+  max-width: 1000px;
+  margin: 0 auto 64px auto;
 }
 
 .progressBar {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .progress {
@@ -71,27 +71,27 @@
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
 }
 
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   text-align: center;
 }
 
 .stepNumber {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.2s ease;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .stepTitle {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: #64748b;
 }
@@ -140,11 +140,11 @@
 }
 
 .content {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }

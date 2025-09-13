@@ -72,13 +72,13 @@ const mockPackages = [
 const mockUsers = [
   {
     id: "user-1",
-    email: "guest@example.com",
+    email: "guest@bulkstay.com",
     role: "guest",
     travelFrequency: "monthly"
   },
   {
     id: "host-1",
-    email: "host@example.com",
+    email: "host@bulkstay.com",
     role: "host"
   }
 ];
@@ -147,11 +147,20 @@ export const cancelBooking = async (bookingId) => {
 };
 
 export const authenticateUser = async (email, password) => {
+  console.log('🔐 [JavaScript API] Authentication attempt:', { email, password });
+  console.log('📋 [JavaScript API] Available mock users:', mockUsers);
+  console.log('🔍 [JavaScript API] This is the JavaScript version of the API');
+  
   await delay(500);
   const user = mockUsers.find(u => u.email === email);
-  if (user) {
+  console.log('👤 [JavaScript API] Found user:', user);
+  
+  if (user && password === 'password') {
+    console.log('✅ [JavaScript API] Authentication successful for user:', user);
     return Promise.resolve(user);
   }
+  
+  console.log('❌ [JavaScript API] Authentication failed');
   return Promise.reject(new Error('Invalid credentials'));
 };
 

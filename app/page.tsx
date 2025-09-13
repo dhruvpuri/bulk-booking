@@ -58,23 +58,29 @@ export default function Home() {
   };
 
   const handleLogin = (loggedInUser: User) => {
-    console.log('Login successful:', loggedInUser);
-    console.log('Selected package at login:', selectedPackage);
+    console.log('🎉 handleLogin called in main page');
+    console.log('👤 Logged in user:', loggedInUser);
+    console.log('📦 Selected package at login:', selectedPackage);
+    console.log('🔄 Current view before login:', currentView);
+    
     setUser(loggedInUser);
     localStorage.setItem('bulkstay_user', JSON.stringify(loggedInUser));
+    console.log('💾 User saved to localStorage');
     
     if (loggedInUser.role === 'host') {
+      console.log('🏠 User is host, redirecting to dashboard');
       setCurrentView('host-dashboard');
     } else {
       // If there was a selected package, go to booking flow
       if (selectedPackage && loggedInUser.role === 'guest') {
-        console.log('Redirecting to booking flow after login with package:', selectedPackage.name);
+        console.log('📦 Redirecting to booking flow after login with package:', selectedPackage.name);
         setCurrentView('booking');
       } else {
-        console.log('No selected package, going to home');
+        console.log('🏠 No selected package, going to home');
         setCurrentView('home');
       }
     }
+    console.log('🔄 Current view after login:', currentView);
   };
 
   const handleLogout = () => {
@@ -373,10 +379,10 @@ const PropertySearchSection: React.FC<{
   });
 
   return (
-    <section id="properties" className="py-20 px-6 lg:px-12 bg-white dark:bg-slate-900">
-      <div className="w-full">
+    <section id="properties" className="py-24 px-8 lg:px-16 bg-white dark:bg-slate-900">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           {selectedProperty ? (
             <div>
               <button
@@ -406,24 +412,24 @@ const PropertySearchSection: React.FC<{
 
         {/* Search Bar - Only show when no property is selected */}
         {!selectedProperty && (
-          <div className="mb-16 max-w-4xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-4 p-6 bg-slate-50 dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="mb-20 max-w-5xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-6 p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
               <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none z-10" />
                 <input
                   type="text"
                   placeholder="Search properties..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                  className="w-full pl-14 pr-6 py-4 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-base font-medium"
                 />
               </div>
               <div className="relative">
-                <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                <MapPin className="absolute left-5 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none z-10" />
                 <select
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="pl-11 pr-10 py-3.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 min-w-[220px] appearance-none cursor-pointer"
+                  className="pl-14 pr-12 py-4 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 min-w-[240px] appearance-none cursor-pointer text-base font-medium"
                 >
                   <option value="all">All Locations</option>
                   {locations.map(location => (
@@ -447,19 +453,19 @@ const PropertySearchSection: React.FC<{
               </div>
             ) : (
               <>
-                <div className="mb-8 text-center">
-                  <p className="text-slate-600 dark:text-slate-300">
+                <div className="mb-12 text-center">
+                  <p className="text-slate-600 dark:text-slate-300 text-lg font-medium">
                     {filteredProperties.length} properties available
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
                   {filteredProperties.map(property => (
                     <div
                       key={property.id}
-                      className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-200 dark:border-slate-700"
+                      className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-700"
                     >
-                      <div className="relative h-52 overflow-hidden">
+                      <div className="relative h-56 overflow-hidden">
                         <img
                           src={property.imageUrl}
                           alt={property.name}
@@ -474,25 +480,25 @@ const PropertySearchSection: React.FC<{
                         </div>
                       </div>
 
-                      <div className="p-6">
-                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2 line-clamp-1">
+                      <div className="p-7">
+                        <h4 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3 line-clamp-1">
                           {property.name}
                         </h4>
-                        <p className="text-slate-600 dark:text-slate-300 mb-3 flex items-center gap-2 text-sm">
+                        <p className="text-slate-600 dark:text-slate-300 mb-4 flex items-center gap-2 text-base">
                           <MapPin className="w-4 h-4 flex-shrink-0" />
                           <span className="line-clamp-1">{property.location}</span>
                         </p>
 
-                        <div className="mb-4">
-                          <span className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                        <div className="mb-6">
+                          <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                             ₹{property.baseRate.toLocaleString()}
                           </span>
-                          <span className="text-slate-500 dark:text-slate-400 text-sm ml-1">/night</span>
+                          <span className="text-slate-500 dark:text-slate-400 text-base ml-1">/night</span>
                         </div>
 
                         <button
                           onClick={() => onSelectProperty(property)}
-                          className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+                          className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-all duration-200 hover:scale-105"
                         >
                           View Packages
                         </button>
@@ -515,9 +521,9 @@ const PropertySearchSection: React.FC<{
 
         {/* Selected Property Details - Show when property is selected */}
         {selectedProperty && (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
-              <div className="relative h-64 overflow-hidden">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
+              <div className="relative h-80 overflow-hidden">
                 <img
                   src={selectedProperty.imageUrl}
                   alt={selectedProperty.name}
@@ -541,10 +547,10 @@ const PropertySearchSection: React.FC<{
                 </div>
               </div>
               
-              <div className="p-6">
-                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-700">
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Choose Your Package</h4>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm">
+              <div className="p-8">
+                <div className="p-6 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-200 dark:border-indigo-700">
+                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">Choose Your Package</h4>
+                  <p className="text-slate-600 dark:text-slate-300 text-base">
                     Select from flexible bulk booking packages below to save up to 30% on your stays.
                   </p>
                 </div>

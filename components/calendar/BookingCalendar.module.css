@@ -8,6 +8,11 @@
   font-family: 'Inter', sans-serif;
 }
 
+:global(.dark) .container {
+  background: #1e293b;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -26,10 +31,18 @@
   margin: 0 0 4px 0;
 }
 
+:global(.dark) .title {
+  color: #f1f5f9;
+}
+
 .subtitle {
   font-size: 16px;
   color: #6b7280;
   margin: 0;
+}
+
+:global(.dark) .subtitle {
+  color: #94a3b8;
 }
 
 .stats {
@@ -47,6 +60,11 @@
   text-align: center;
 }
 
+:global(.dark) .stat {
+  background: #334155;
+  border: 1px solid #475569;
+}
+
 .statValue {
   display: block;
   font-size: 24px;
@@ -55,10 +73,18 @@
   margin-bottom: 4px;
 }
 
+:global(.dark) .statValue {
+  color: #60a5fa;
+}
+
 .statLabel {
   font-size: 14px;
   color: #64748b;
   font-weight: 500;
+}
+
+:global(.dark) .statLabel {
+  color: #94a3b8;
 }
 
 .content {
@@ -83,10 +109,18 @@
   margin: 0 0 4px 0;
 }
 
+:global(.dark) .sectionTitle {
+  color: #f1f5f9;
+}
+
 .sectionSubtitle {
   font-size: 14px;
   color: #6b7280;
   margin: 0;
+}
+
+:global(.dark) .sectionSubtitle {
+  color: #94a3b8;
 }
 
 .loading {
@@ -129,6 +163,10 @@
   padding: 20px;
 }
 
+:global(.dark) .bookingDetails {
+  background: #334155;
+}
+
 .detailsTitle {
   font-size: 18px;
   font-weight: 600;
@@ -136,11 +174,20 @@
   margin: 0 0 16px 0;
 }
 
+:global(.dark) .detailsTitle {
+  color: #f1f5f9;
+}
+
 .bookingCard {
   background: white;
   border-radius: 8px;
   padding: 20px;
   border: 1px solid #e2e8f0;
+}
+
+:global(.dark) .bookingCard {
+  background: #475569;
+  border: 1px solid #64748b;
 }
 
 .bookingHeader {
@@ -191,10 +238,18 @@
   margin: 0 0 4px 0;
 }
 
+:global(.dark) .guestName {
+  color: #f1f5f9;
+}
+
 .guestEmail {
   font-size: 14px;
   color: #6b7280;
   margin: 0;
+}
+
+:global(.dark) .guestEmail {
+  color: #94a3b8;
 }
 
 .bookingInfo {
@@ -219,10 +274,18 @@
   font-weight: 500;
 }
 
+:global(.dark) .infoLabel {
+  color: #94a3b8;
+}
+
 .infoValue {
   font-size: 14px;
   color: #1e293b;
   font-weight: 600;
+}
+
+:global(.dark) .infoValue {
+  color: #f1f5f9;
 }
 
 .actions {
@@ -237,6 +300,10 @@
   text-align: center;
 }
 
+:global(.dark) .noSelection {
+  background: #334155;
+}
+
 .noSelectionIcon {
   font-size: 48px;
   margin-bottom: 16px;
@@ -249,11 +316,19 @@
   margin: 0 0 8px 0;
 }
 
+:global(.dark) .noSelectionTitle {
+  color: #f1f5f9;
+}
+
 .noSelectionText {
   font-size: 14px;
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
+}
+
+:global(.dark) .noSelectionText {
+  color: #94a3b8;
 }
 
 .upcomingBookings {
@@ -262,11 +337,19 @@
   padding: 20px;
 }
 
+:global(.dark) .upcomingBookings {
+  background: #334155;
+}
+
 .upcomingTitle {
   font-size: 16px;
   font-weight: 600;
   color: #1f2937;
   margin: 0 0 16px 0;
+}
+
+:global(.dark) .upcomingTitle {
+  color: #f1f5f9;
 }
 
 .bookingsList {
@@ -285,6 +368,11 @@
   align-items: center;
 }
 
+:global(.dark) .upcomingBooking {
+  background: #475569;
+  border: 1px solid #64748b;
+}
+
 .upcomingInfo {
   display: flex;
   flex-direction: column;
@@ -297,15 +385,27 @@
   color: #1f2937;
 }
 
+:global(.dark) .upcomingGuest {
+  color: #f1f5f9;
+}
+
 .upcomingDates {
   font-size: 12px;
   color: #6b7280;
+}
+
+:global(.dark) .upcomingDates {
+  color: #94a3b8;
 }
 
 .upcomingAmount {
   font-size: 14px;
   font-weight: 600;
   color: #059669;
+}
+
+:global(.dark) .upcomingAmount {
+  color: #34d399;
 }
 
 /* Responsive design */

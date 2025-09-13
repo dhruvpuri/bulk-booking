@@ -35,18 +35,26 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
     setLoading(true);
     setError(null);
 
+    console.log('🚀 Form submission started');
+    console.log('📝 Form data:', formData);
+    console.log('🔄 Is login mode:', isLogin);
+
     try {
       if (isLogin) {
         // Login flow
+        console.log('🔐 Attempting login with:', { email: formData.email, password: formData.password });
         const user = await authenticateUser(formData.email, formData.password);
+        console.log('✅ Login successful, user received:', user);
         
         // If user is trying to book a package but logged in as host, show error
         if (selectedPackage && user.role === 'host') {
+          console.log('⚠️ Host trying to book package, showing error');
           setError('Hosts cannot book packages. Please log in as a guest or create a guest account.');
           setLoading(false);
           return;
         }
         
+        console.log('🎯 Calling onLogin with user:', user);
         onLogin(user);
       } else {
         // Registration flow
@@ -72,8 +80,12 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
         onLogin(user);
       }
     } catch (err) {
+      console.log('❌ Authentication error:', err);
+      console.log('❌ Error type:', typeof err);
+      console.log('❌ Error message:', err instanceof Error ? err.message : 'Unknown error');
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
+      console.log('🏁 Authentication process completed, setting loading to false');
       setLoading(false);
     }
   };
@@ -217,11 +229,13 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
                 <button
                   type="button"
                   onClick={() => {
+                    console.log('🔄 Quick Fill Guest clicked');
                     setFormData(prev => ({
                       ...prev,
                       email: 'guest@bulkstay.com',
                       password: 'password'
                     }));
+                    console.log('✅ Guest credentials filled');
                   }}
                   className={styles.quickFillButton}
                 >
@@ -233,11 +247,13 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
                 <button
                   type="button"
                   onClick={() => {
+                    console.log('🔄 Quick Fill Host clicked');
                     setFormData(prev => ({
                       ...prev,
                       email: 'host@bulkstay.com',
                       password: 'password'
                     }));
+                    console.log('✅ Host credentials filled');
                   }}
                   className={styles.quickFillButton}
                 >
@@ -245,6 +261,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onLogin, selectedPackage }) =
                 </button>
               </div>
             </div>
+
           </div>
         )}
 

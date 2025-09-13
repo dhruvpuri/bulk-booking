@@ -33,7 +33,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ package: pkg, onReserve }) =>
 
       <div className={styles.imageContainer}>
         <img 
-          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=500&q=80" 
+          src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=500&q=80" 
           alt="Luxury accommodation"
           className={styles.image}
         />

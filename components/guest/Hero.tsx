@@ -46,7 +46,7 @@ const Hero: React.FC = () => {
         </div>
         <div className={styles.imageContainer}>
           <img 
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop&auto=format" 
+            src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop&auto=format" 
             alt="Luxury vacation rental with modern amenities"
             className={styles.heroImage}
           />

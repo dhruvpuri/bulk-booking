@@ -186,11 +186,11 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
       <div className={styles.main}>
         {selectedView === 'properties' && (
           <>
-            <div className={styles.welcomeSection}>
-              <h1 className={styles.welcomeTitle}>
+            <div className="mb-8 p-6 bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 rounded-2xl text-white">
+              <h1 className="text-2xl font-bold mb-2">
                 Welcome back, {user.email.split('@')[0]}! 👋
               </h1>
-              <p className={styles.welcomeSubtitle}>
+              <p className="text-indigo-100 dark:text-purple-100">
                 Manage your properties and track your bulk booking performance
               </p>
             </div>
