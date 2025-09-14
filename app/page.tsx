@@ -8,6 +8,7 @@ import PropertyBrowser from '@/components/guest/PropertyBrowser';
 import LoginSignup from '@/components/auth/LoginSignup';
 import HostDashboard from '@/components/host/HostDashboard';
 import BookingFlow from '@/components/booking/BookingFlow';
+import AvailabilityCalendar from '@/components/calendar/AvailabilityCalendar';
 import { User as UserIcon, Search, MapPin, Star, ChevronDown, Menu, X, Calendar, Users, Shield, Award, ChevronRight } from 'lucide-react';
 
 export default function Home() {
@@ -20,6 +21,10 @@ export default function Home() {
   const [showPackagesForProperty, setShowPackagesForProperty] = useState(false);
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [calendarDateRange, setCalendarDateRange] = useState<string>('');
+  const [passengers, setPassengers] = useState({ adults: 2, children: 0, rooms: 1 });
+  const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
 
   useEffect(() => {
     loadPackages();
@@ -152,6 +157,54 @@ export default function Home() {
     setShowPackagesForProperty(false);
   };
 
+  const handleCalendarDateSelect = (dates: string[]) => {
+    setSelectedDates(dates);
+    if (dates.length > 0) {
+      const startDate = new Date(dates[0]);
+      const endDate = new Date(dates[dates.length - 1]);
+      const startStr = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const endStr = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      setCalendarDateRange(dates.length === 1 ? startStr : `${startStr} — ${endStr}`);
+    } else {
+      setCalendarDateRange('');
+    }
+  };
+
+  const handleCalendarConfirm = () => {
+    setShowCalendar(false);
+    // You can add additional logic here if needed
+  };
+
+  const handleCalendarCancel = () => {
+    setShowCalendar(false);
+    setSelectedDates([]);
+    setCalendarDateRange('');
+  };
+
+  const handlePassengerDropdownToggle = () => {
+    setShowPassengerDropdown(!showPassengerDropdown);
+  };
+
+  const handlePassengerChange = (type: 'adults' | 'children' | 'rooms', increment: boolean) => {
+    setPassengers(prev => ({
+      ...prev,
+      [type]: increment ? prev[type] + 1 : prev[type] - 1
+    }));
+  };
+
+  // Close passenger dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showPassengerDropdown && !target.closest('.passenger-dropdown')) {
+        setShowPassengerDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showPassengerDropdown]);
+
 
 
   const handleSelectProperty = (property: Property) => {
@@ -192,15 +245,10 @@ export default function Home() {
 
           <nav className="hidden md:flex items-center gap-8 text-slate-600">
             <button 
-              onClick={() => {
-                const el = document.getElementById('search');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }} 
+              onClick={handleBackToHome}
               className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all duration-300"
             >
-              Hotels
+              Home
             </button>
             <button 
               onClick={() => {
@@ -213,7 +261,17 @@ export default function Home() {
             >
               How it works
             </button>
-            <button onClick={() => setCurrentView('properties')} className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all">Explore</button>
+            <button 
+              onClick={() => {
+                const el = document.getElementById('search');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }} 
+              className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all duration-300"
+            >
+              Explore
+            </button>
             <button className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all" onClick={() => setCurrentView(user?.role === 'host' ? 'host-dashboard' : 'login')}>
               For Hosts
             </button>
@@ -305,11 +363,22 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         {renderHeader()}
-        <MainHero onExploreClick={() => document.getElementById('search')?.scrollIntoView({ behavior: 'smooth' })} />
+        <MainHero 
+          onExploreClick={() => document.getElementById('search')?.scrollIntoView({ behavior: 'smooth' })}
+          searchTerm={globalSearchTerm}
+          onSearchChange={setGlobalSearchTerm}
+          onCalendarOpen={() => setShowCalendar(true)}
+          calendarDateRange={calendarDateRange}
+          passengers={passengers}
+          showPassengerDropdown={showPassengerDropdown}
+          onPassengerDropdownToggle={handlePassengerDropdownToggle}
+          onPassengerChange={handlePassengerChange}
+        />
         <PropertySearchAndCatalog
           onSelectProperty={handleSelectProperty}
           selectedProperty={selectedProperty}
           onBackToProperties={handleBackToProperties}
+          globalSearchTerm={globalSearchTerm}
         />
         <SiteFooter />
       </div>
@@ -327,6 +396,11 @@ export default function Home() {
         searchTerm={globalSearchTerm}
         onSearchChange={setGlobalSearchTerm}
         onCalendarOpen={() => setShowCalendar(true)}
+        calendarDateRange={calendarDateRange}
+        passengers={passengers}
+        showPassengerDropdown={showPassengerDropdown}
+        onPassengerDropdownToggle={handlePassengerDropdownToggle}
+        onPassengerChange={handlePassengerChange}
       />
 
       {/* Wrap your main page content in a single container */}
@@ -334,11 +408,11 @@ export default function Home() {
         <HowItWorksSection />
 
         <PropertySearchAndCatalog 
-          onSelectProperty={handleSelectProperty} 
-          selectedProperty={selectedProperty}
-          onBackToProperties={handleBackToProperties}
+        onSelectProperty={handleSelectProperty} 
+        selectedProperty={selectedProperty}
+        onBackToProperties={handleBackToProperties}
           globalSearchTerm={globalSearchTerm}
-        />
+      />
       
       {/* Packages Section - Only show when property is selected */}
       {showPackagesForProperty && selectedProperty && (
@@ -348,7 +422,7 @@ export default function Home() {
               <div className="flex flex-col items-center gap-4">
                   <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
                   <p className="text-slate-700 font-medium">Loading packages for {selectedProperty.name}...</p>
-                </div>
+              </div>
             </div>
           ) : (
             <PackageExplorer 
@@ -364,6 +438,38 @@ export default function Home() {
 
       {/* Footer can also remain full-width, as it has its own internal container */}
       <SiteFooter />
+
+      {/* Calendar Modal */}
+      {showCalendar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Select Your Travel Dates</h2>
+                  <p className="text-gray-600 mt-1">Choose your preferred dates for your stay</p>
+                </div>
+                <button
+                  onClick={handleCalendarCancel}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Close calendar"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+            </div>
+            <div className="p-4">
+              <AvailabilityCalendar
+                maxNights={15}
+                onDateSelect={handleCalendarDateSelect}
+                onConfirm={handleCalendarConfirm}
+                onCancel={handleCalendarCancel}
+                selectedDates={selectedDates}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -374,7 +480,12 @@ const MainHero: React.FC<{
   searchTerm: string;
   onSearchChange: (term: string) => void;
   onCalendarOpen: () => void;
-}> = ({ onExploreClick, searchTerm, onSearchChange, onCalendarOpen }) => {
+  calendarDateRange: string;
+  passengers: { adults: number; children: number; rooms: number };
+  showPassengerDropdown: boolean;
+  onPassengerDropdownToggle: () => void;
+  onPassengerChange: (type: 'adults' | 'children' | 'rooms', increment: boolean) => void;
+}> = ({ onExploreClick, searchTerm, onSearchChange, onCalendarOpen, calendarDateRange, passengers, showPassengerDropdown, onPassengerDropdownToggle, onPassengerChange }) => {
   return (
     <section className="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white overflow-hidden">
       {/* Background Image Overlay */}
@@ -416,20 +527,94 @@ const MainHero: React.FC<{
                   <input
                     type="text"
                     placeholder="Check-in — Check-out"
+                    value={calendarDateRange}
                     className="w-full lg:w-48 h-11 pl-9 pr-3 border border-gray-200 rounded text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:border-blue-500 bg-white cursor-pointer"
                     onClick={onCalendarOpen}
                     readOnly
                   />
                 </div>
                 
-                <div className="relative">
+                <div className="relative passenger-dropdown">
                   <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
                   <input
                     type="text"
-                    placeholder="2 adults · 0 children · 1 room"
-                    className="w-full lg:w-52 h-11 pl-9 pr-3 border border-gray-200 rounded text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:border-blue-500 bg-white"
+                    value={`${passengers.adults} adult${passengers.adults !== 1 ? 's' : ''} · ${passengers.children} child${passengers.children !== 1 ? 'ren' : ''} · ${passengers.rooms} room${passengers.rooms !== 1 ? 's' : ''}`}
+                    className="w-full lg:w-52 h-11 pl-9 pr-3 border border-gray-200 rounded text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:border-blue-500 bg-white cursor-pointer"
+                    onClick={onPassengerDropdownToggle}
                     readOnly
                   />
+                  {showPassengerDropdown && (
+                    <div className="absolute top-12 left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-900 font-medium text-sm">Adults</span>
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('adults', false)}
+                              disabled={passengers.adults <= 1}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              −
+                            </button>
+                            <span className="w-8 text-center font-medium text-gray-900 text-sm">{passengers.adults}</span>
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('adults', true)}
+                              disabled={passengers.adults >= 8}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-900 font-medium text-sm">Children</span>
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('children', false)}
+                              disabled={passengers.children <= 0}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              −
+                            </button>
+                            <span className="w-8 text-center font-medium text-gray-900 text-sm">{passengers.children}</span>
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('children', true)}
+                              disabled={passengers.children >= 6}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-900 font-medium text-sm">Rooms</span>
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('rooms', false)}
+                              disabled={passengers.rooms <= 1}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              −
+                            </button>
+                            <span className="w-8 text-center font-medium text-gray-900 text-sm">{passengers.rooms}</span>
+                            <button
+                              type="button"
+                              onClick={() => onPassengerChange('rooms', true)}
+                              disabled={passengers.rooms >= 4}
+                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <button onClick={onExploreClick} className="h-11 px-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded transition-colors flex-shrink-0 text-sm">
@@ -559,7 +744,7 @@ const PropertySearchAndCatalog: React.FC<{
               </button>
               <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
                 Neighborhood
-              </button>
+                </button>
             </div>
           </div>
         )}
