@@ -499,10 +499,10 @@ const MainHero: React.FC<{
       
       <div className="relative z-10 px-6 lg:px-12 py-16 lg:py-20">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-2xl hero-text-white" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
             Find deals for any season
           </h1>
-          <p className="text-xl lg:text-2xl mb-8 text-blue-50 font-medium drop-shadow-md">
+          <p className="text-xl lg:text-2xl mb-8 font-medium drop-shadow-xl hero-text-white" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.7)'}}>
             From cozy country homes to funky city apartments
           </p>
           

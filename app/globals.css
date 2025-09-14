@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Force white text in hero section */
+.hero-text-white {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
