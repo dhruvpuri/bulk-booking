@@ -27,7 +27,7 @@ const PackageExplorer: React.FC<PackageExplorerProps> = ({ packages, onReserve, 
           <div className="mb-8">
             <button
               onClick={onBackToProperties}
-              className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium"
+              className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
             >
               ← Back to all properties
             </button>

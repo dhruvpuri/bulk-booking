@@ -245,7 +245,7 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-8 text-slate-600">
             <button 
               onClick={handleBackToHome}
-              className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all duration-300"
+              className="relative hover:text-blue-700 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-blue-600 hover:after:w-full after:transition-all duration-300"
             >
               Home
             </button>
@@ -256,7 +256,7 @@ export default function Home() {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }} 
-              className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all duration-300"
+              className="relative hover:text-blue-700 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-blue-600 hover:after:w-full after:transition-all duration-300"
             >
               How it works
             </button>
@@ -267,11 +267,11 @@ export default function Home() {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }} 
-              className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all duration-300"
+              className="relative hover:text-blue-700 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-blue-600 hover:after:w-full after:transition-all duration-300"
             >
               Explore
             </button>
-            <button className="relative hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-indigo-600 hover:after:w-full after:transition-all" onClick={() => setCurrentView(user?.role === 'host' ? 'host-dashboard' : 'login')}>
+            <button className="relative hover:text-blue-700 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-blue-600 hover:after:w-full after:transition-all duration-300" onClick={() => setCurrentView(user?.role === 'host' ? 'host-dashboard' : 'login')}>
               For Hosts
             </button>
           </nav>
@@ -294,7 +294,7 @@ export default function Home() {
                 {user.role === 'host' && currentView !== 'host-dashboard' && (
                   <button
                     onClick={() => setCurrentView('host-dashboard')}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
                   >
                     Dashboard
                   </button>
@@ -311,7 +311,7 @@ export default function Home() {
             ) : (
               <button
                 onClick={() => setCurrentView('login')}
-                className="relative px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden group"
+                className="relative px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden group"
               >
                 <span className="relative z-10">Sign In</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -450,10 +450,10 @@ export default function Home() {
                 </div>
                 <button
                   onClick={handleCalendarCancel}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 hover:bg-blue-50 rounded-full transition-colors text-blue-600 hover:text-blue-700"
                   aria-label="Close calendar"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -552,7 +552,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('adults', false)}
                               disabled={passengers.adults <= 1}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               −
                             </button>
@@ -561,7 +561,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('adults', true)}
                               disabled={passengers.adults >= 8}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               +
                             </button>
@@ -574,7 +574,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('children', false)}
                               disabled={passengers.children <= 0}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               −
                             </button>
@@ -583,7 +583,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('children', true)}
                               disabled={passengers.children >= 6}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               +
                             </button>
@@ -596,7 +596,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('rooms', false)}
                               disabled={passengers.rooms <= 1}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               −
                             </button>
@@ -605,7 +605,7 @@ const MainHero: React.FC<{
                               type="button"
                               onClick={() => onPassengerChange('rooms', true)}
                               disabled={passengers.rooms >= 4}
-                              className="w-8 h-8 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-medium text-sm"
+                              className="w-8 h-8 rounded-full border border-blue-300 bg-white flex items-center justify-center hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-blue-600 font-medium text-sm hover:border-blue-400"
                             >
                               +
                             </button>
@@ -696,7 +696,7 @@ const PropertySearchAndCatalog: React.FC<{
             <div>
               <button
                 onClick={onBackToProperties}
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-4"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-4 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
               >
                 ← Back to all hotels
               </button>
@@ -728,19 +728,19 @@ const PropertySearchAndCatalog: React.FC<{
           <div className="mb-6">
             {/* Filter Pills */}
             <div className="flex flex-wrap gap-2 mb-4">
-              <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
+              <button className="px-3 py-1.5 border border-blue-200 rounded-full text-xs hover:border-blue-300 transition-colors bg-white text-blue-600 hover:bg-blue-50">
                 Price
               </button>
-              <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
+              <button className="px-3 py-1.5 border border-blue-200 rounded-full text-xs hover:border-blue-300 transition-colors bg-white text-blue-600 hover:bg-blue-50">
                 Property type
               </button>
-              <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
+              <button className="px-3 py-1.5 border border-blue-200 rounded-full text-xs hover:border-blue-300 transition-colors bg-white text-blue-600 hover:bg-blue-50">
                 Review score
               </button>
-              <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
+              <button className="px-3 py-1.5 border border-blue-200 rounded-full text-xs hover:border-blue-300 transition-colors bg-white text-blue-600 hover:bg-blue-50">
                 Facilities
               </button>
-              <button className="px-3 py-1.5 border border-gray-300 rounded-full text-xs hover:border-gray-400 transition-colors bg-white">
+              <button className="px-3 py-1.5 border border-blue-200 rounded-full text-xs hover:border-blue-300 transition-colors bg-white text-blue-600 hover:bg-blue-50">
                 Neighborhood
                 </button>
             </div>
@@ -810,7 +810,7 @@ const PropertySearchAndCatalog: React.FC<{
 
                         <button
                           onClick={() => onSelectProperty(property)}
-                          className="mt-auto w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-all duration-200"
+                          className="mt-auto w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg"
                         >
                           View Packages
                         </button>
