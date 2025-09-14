@@ -142,7 +142,7 @@ const mockProperties: Property[] = [
     name: 'Desert Camp',
     location: 'Jaisalmer, Rajasthan',
     baseRate: 9500, // ₹9,500
-    imageUrl: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
     totalBookings: 22,
     occupancyRate: 68,
     isBulkBookingEnabled: true,

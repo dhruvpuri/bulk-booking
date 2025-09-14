@@ -244,12 +244,8 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Remove default margins */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Note: Removed conflicting CSS reset that was overriding Tailwind utilities.
+   Tailwind's Preflight already handles this properly. */
 
 /* Button reset */
 button {

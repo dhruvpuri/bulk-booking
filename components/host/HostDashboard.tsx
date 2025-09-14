@@ -1,14 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTheme } from 'next-themes';
 import { Property } from '@/types';
 import { getProperties, updatePropertyBulkBooking } from '@/services/api';
 import PropertyCard from './PropertyCard';
 import BookingCalendar from '@/components/calendar/BookingCalendar';
 import AddPropertyModal from './AddPropertyModal';
 import styles from './HostDashboard.module.css';
-import { Moon, Sun } from 'lucide-react';
+import { } from 'lucide-react';
 
 import { User } from '@/types';
 
@@ -18,7 +17,6 @@ interface HostDashboardProps {
 }
 
 const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,9 +44,7 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
     loadProperties();
   }, [loadProperties]);
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
+  
 
   const handleToggleBulkBooking = async (propertyId: number, enabled: boolean) => {
     try {
@@ -117,19 +113,7 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
               <h1 className={styles.logoText}>BulkStay</h1>
               <p className={styles.logoSubtext}>Host Dashboard</p>
             </div>
-            {mounted && (
-              <button 
-                onClick={toggleTheme}
-                className={styles.themeToggle}
-                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              >
-                {theme === 'dark' ? (
-                  <Sun className="w-4 h-4 text-amber-500" />
-                ) : (
-                  <Moon className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-                )}
-              </button>
-            )}
+            
           </div>
         </div>
 

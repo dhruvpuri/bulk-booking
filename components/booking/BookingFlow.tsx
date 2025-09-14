@@ -12,6 +12,7 @@ import styles from './BookingFlow.module.css';
 
 interface BookingFlowProps {
   selectedPackageId?: number;
+  selectedProperty?: Property | null;
   onComplete: () => void;
   onBack: () => void;
 }
@@ -36,7 +37,7 @@ interface StepData {
   totalAmount?: number;
 }
 
-const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete, onBack }) => {
+const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, selectedProperty, onComplete, onBack }) => {
   // Check if user is already logged in and skip registration
   const [currentStep, setCurrentStep] = useState(() => {
     const savedUser = localStorage.getItem('bulkstay_user');
@@ -55,19 +56,27 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
   });
   
   const [bookingData, setBookingData] = useState<BookingData>(() => {
-    // Pre-populate with user data if available
+    // Pre-populate with user data and selected property if available
     const savedUser = localStorage.getItem('bulkstay_user');
+    let initialData: BookingData = {};
+    
     if (savedUser) {
       try {
         const user = JSON.parse(savedUser);
         if (user && user.role === 'guest') {
-          return { user };
+          initialData.user = user;
         }
       } catch (e) {
         console.log('Error parsing user for booking data:', e);
       }
     }
-    return {};
+    
+    // Include selected property if provided
+    if (selectedProperty) {
+      initialData.selectedProperty = selectedProperty;
+    }
+    
+    return initialData;
   });
 
   // Load the selected package when component mounts
@@ -86,7 +95,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
     }
   }, [selectedPackageId, bookingData.selectedPackage]);
 
-  const steps = [
+  // Dynamic steps based on whether property is already selected
+  const steps = selectedProperty ? [
+    { number: 1, title: 'Guest Registration', component: 'registration' },
+    { number: 2, title: 'Package Selection', component: 'selection' },
+    { number: 3, title: 'Payment', component: 'payment' },
+    { number: 4, title: 'Confirmation', component: 'confirmation' }
+  ] : [
     { number: 1, title: 'Guest Registration', component: 'registration' },
     { number: 2, title: 'Package Selection', component: 'selection' },
     { number: 3, title: 'Property Selection', component: 'property' },
@@ -136,25 +151,50 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, onComplete
           />
         );
       case 3:
-        console.log('🏨 Rendering Property Selection step');
-        return (
-          <PropertyBrowser
-            onSelectProperty={(property: Property) => {
-              handleStepComplete({ selectedProperty: property });
-            }}
-            onBack={handleStepBack}
-            selectedPackage={bookingData.selectedPackage}
-          />
-        );
+        // If property is already selected, skip to payment, otherwise show property selection
+        if (selectedProperty) {
+          console.log('💳 Rendering Payment step (property already selected)');
+          return (
+            <PaymentScreen
+              onComplete={handleStepComplete}
+              onBack={handleStepBack}
+              bookingData={bookingData}
+            />
+          );
+        } else {
+          console.log('🏨 Rendering Property Selection step');
+          return (
+            <PropertyBrowser
+              onSelectProperty={(property: Property) => {
+                handleStepComplete({ selectedProperty: property });
+              }}
+              onBack={handleStepBack}
+              selectedPackage={bookingData.selectedPackage}
+            />
+          );
+        }
       case 4:
-        return (
-          <PaymentScreen
-            onComplete={handleStepComplete}
-            onBack={handleStepBack}
-            bookingData={bookingData}
-          />
-        );
+        // Adjust case numbers based on whether property was pre-selected
+        if (selectedProperty) {
+          console.log('✅ Rendering Confirmation step (property pre-selected)');
+          return (
+            <ConfirmationPage
+              onComplete={onComplete}
+              bookingData={bookingData}
+            />
+          );
+        } else {
+          console.log('💳 Rendering Payment step');
+          return (
+            <PaymentScreen
+              onComplete={handleStepComplete}
+              onBack={handleStepBack}
+              bookingData={bookingData}
+            />
+          );
+        }
       case 5:
+        console.log('✅ Rendering Confirmation step');
         return (
           <ConfirmationPage
             onComplete={onComplete}
