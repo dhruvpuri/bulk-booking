@@ -17,7 +17,6 @@ interface HostDashboardProps {
 }
 
 const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
-  const [mounted, setMounted] = useState(false);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +39,6 @@ const HostDashboard: React.FC<HostDashboardProps> = ({ user, onLogout }) => {
   }, [user.id]);
 
   useEffect(() => {
-    setMounted(true);
     loadProperties();
   }, [loadProperties]);
 

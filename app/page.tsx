@@ -4,12 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { User, Package, Property } from '@/types';
 import { getPackages, getProperties } from '@/services/api';
 import PackageExplorer from '@/components/guest/PackageExplorer';
-import PropertyBrowser from '@/components/guest/PropertyBrowser';
 import LoginSignup from '@/components/auth/LoginSignup';
 import HostDashboard from '@/components/host/HostDashboard';
 import BookingFlow from '@/components/booking/BookingFlow';
 import AvailabilityCalendar from '@/components/calendar/AvailabilityCalendar';
-import { User as UserIcon, Search, MapPin, Star, ChevronDown, Menu, X, Calendar, Users, Shield, Award, ChevronRight } from 'lucide-react';
+import { User as UserIcon, Search, MapPin, Star, X, Calendar, Users, Shield } from 'lucide-react';
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -658,7 +657,7 @@ const PropertySearchAndCatalog: React.FC<{
   globalSearchTerm: string;
 }> = ({ onSelectProperty, selectedProperty, onBackToProperties, globalSearchTerm }) => {
   const [searchTerm, setSearchTerm] = useState(globalSearchTerm);
-  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [selectedLocation] = useState('all');
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -682,7 +681,6 @@ const PropertySearchAndCatalog: React.FC<{
     }
   };
 
-  const locations = [...new Set(properties.map(p => p.location))];
   
   const filteredProperties = properties.filter(property => {
     const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

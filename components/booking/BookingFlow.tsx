@@ -58,7 +58,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({ selectedPackageId, selectedPr
   const [bookingData, setBookingData] = useState<BookingData>(() => {
     // Pre-populate with user data and selected property if available
     const savedUser = localStorage.getItem('bulkstay_user');
-    let initialData: BookingData = {};
+    const initialData: BookingData = {};
     
     if (savedUser) {
       try {
