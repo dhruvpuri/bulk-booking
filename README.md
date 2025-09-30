@@ -180,29 +180,7 @@ Ready for integration with:
 - **Amplitude**
 - **Custom analytics dashboard**
 
-## 🚀 Deployment
 
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables
-3. Deploy automatically on push to main branch
-
-### Other Platforms
-- **Netlify**: Configure build command and publish directory
-- **AWS Amplify**: Set up continuous deployment
-- **Railway**: Connect GitHub repository
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -211,15 +189,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Next.js** for the React framework
 - **Unsplash** for the property images
 
-## 📞 Support
 
-For support and questions:
-- **Email**: support@bulkstay.com
-- **Phone**: 1800-BULK-STAY
-- **Live Chat**: Available 24/7 on the platform
-
----
-
-**Live Demo**: [https://bulkstay-platform.lindy.site](https://bulkstay-platform.lindy.site)
 
 Built with ❤️ for the Indian travel market
